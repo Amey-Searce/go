@@ -1,4 +1,4 @@
-# LinkUp application
+# Golang Course
 
 
 
@@ -6,7 +6,7 @@
 
 
 
-## How to Use 
+## How to use the repository
 
 **Step 1:**
 
