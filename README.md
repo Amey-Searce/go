@@ -18,7 +18,7 @@ git clone https://github.com/Amey-Searce/go.git
 
 **Step 2:**
 
-Go to a particular folder  and execute the following command: 
+To go to a folder
 
 ```
  cd Exercises - Ninja Level #n (where n =1,2,3,4,5...)
@@ -26,7 +26,7 @@ Go to a particular folder  and execute the following command:
 
 **Step 3:**
 
-To run the Application:
+To run a file:
 
 ```
 go run udemy-exercise-#n (where n=1,2,3,4...)
