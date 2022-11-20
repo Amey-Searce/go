@@ -13,7 +13,7 @@
 Download or clone this repo by using the link below:
 
 ```
-git clone 
+git clone https://github.com/Amey-Searce/go.git
 ```
 
 **Step 2:**
