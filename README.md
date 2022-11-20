@@ -18,7 +18,7 @@ git clone
 
 **Step 2:**
 
-Go to project root and execute the following command in console to get the required dependencies: 
+Go to a particular folder  and execute the following command: 
 
 ```
  cd Exercises - Ninja Level #n (where n =1,2,3,4,5...)
