@@ -1,22 +1,35 @@
-Golang Course
+# LinkUp application
 
-Exercises - Ninja Level 1 
 
-It contains 5 files 
 
-- udemy-exercise-1.go
-- udemy-exercise-2.go
-- udemy-exercise-3.go
-- udemy-exercise-4.go
-- udemy-exercise-5.go
+## Getting Started
 
-Exercises - Ninja Level 2 
 
-It contains 6 files 
 
-- udemy-exercise-1.go
-- udemy-exercise-2.go
-- udemy-exercise-3.go
-- udemy-exercise-4.go
-- udemy-exercise-5.go
-- udemy-exercise-6.go
+## How to Use 
+
+**Step 1:**
+
+Download or clone this repo by using the link below:
+
+```
+git clone 
+```
+
+**Step 2:**
+
+Go to project root and execute the following command in console to get the required dependencies: 
+
+```
+ cd Exercises - Ninja Level #n (where n =1,2,3,4,5...)
+```
+
+**Step 3:**
+
+To run the Application:
+
+```
+go run udemy-exercise-#n (where n=1,2,3,4...)
+```
+
+  
