@@ -22,4 +22,5 @@ func main() {
 	sum_returned := sum_total(array_numbers...)
 	total_sum_returned := total_sum(array_numbers)
 	fmt.Printf("Sum returned from both functions %v %v", sum_returned, total_sum_returned)
+	
 }
