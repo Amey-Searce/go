@@ -34,7 +34,11 @@ go run main.go
 
 **Step 4:**
 
-The program has 2 modes: System Console and Api endpoints. Type 1 for system console mode and type 2 to expose the api endpoints on port 1234
+The program has 2 modes: System Console and Api endpoints. 
+
+Enter 1 for system console mode. 
+
+Enter 2 to expose the api endpoints on port 1234.
 
 
   
