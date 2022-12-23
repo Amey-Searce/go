@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"go-crud/console_intface_controller"
 	"go-crud/logging"
+	"go-crud/model"
 	"log"
 	"net/http"
 
@@ -44,10 +45,60 @@ func main() {
 			fmt.Println("Enter your choice:")
 			fmt.Scanln(&system_console_option)
 			if system_console_option == "1" {
-				console_intface_controller.GetProducts()
+				var pg_number int
+
+				fmt.Println("Enter page number:")
+				fmt.Scanln(&pg_number)
+				console_intface_controller.GetProducts(pg_number)
+			}
+			if system_console_option == "2" {
+				var id string
+
+				fmt.Println("Enter the shop id")
+				fmt.Scanln(&id)
+				console_intface_controller.GetProduct(id)
 			}
 			if system_console_option == "3" {
-				console_intface_controller.AddItemtoCart()
+				var name_product string
+				var quantity int
+				var productdetailsreq model.ShopDetailsReq
+				var arr_product []model.ShopDetailsReq
+
+				for {
+					fmt.Println("Enter the Product Name")
+					fmt.Scanln(&name_product)
+					fmt.Println("Enter the quantity")
+					fmt.Scanln(&quantity)
+
+					productdetailsreq.Name = name_product
+					productdetailsreq.Quantity = quantity
+					arr_product = append(arr_product, productdetailsreq)
+
+					fmt.Println("If done adding shop items, press 1")
+					fmt.Scanln(&option)
+					if option == "1" {
+						break
+					}
+
+				}
+				console_intface_controller.AddItemtoCart(arr_product)
+			}
+			if system_console_option == "4" {
+
+				var shop_details model.Product
+				fmt.Println("Enter the name of the product")
+				fmt.Scanln(&shop_details.Name)
+				fmt.Println("Enter the specs of the product")
+				fmt.Scanln(&shop_details.Specs)
+				fmt.Println("Enter the sku of the product")
+				fmt.Scanln(&shop_details.Sku)
+				fmt.Println("Enter the category of the product")
+				fmt.Scanln(&shop_details.Category)
+				fmt.Println("Enter the price of the product")
+				fmt.Scanln(&shop_details.Price)
+				fmt.Println("Enter the productid")
+				fmt.Scanln(&shop_details.Productid)
+				console_intface_controller.InsertProduct(shop_details)
 			}
 			if system_console_option == "5" {
 				fmt.Println("Exiting...")

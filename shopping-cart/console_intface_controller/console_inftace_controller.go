@@ -6,20 +6,16 @@ import (
 	"go-crud/config"
 	"go-crud/model"
 	"log"
-	"time"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 // Returns all the products with details such as Name, Product ID, Specs.
-func GetProducts() {
+func GetProducts(page_number int) []model.GetProductDetails {
 	var product model.GetProductDetails
 	var arrProducts []model.GetProductDetails
-	var page_number int
-
-	fmt.Println("Enter page number:")
-	fmt.Scanln(&page_number)
 	db := config.Connect()
 	defer db.Close()
-
 	// Added pagination in the query.
 	// 20 records at max should be displayed
 	rows, err := db.Query("SELECT productid, name, specs from product limit 20 offset ?", (page_number-1)*20)
@@ -38,91 +34,76 @@ func GetProducts() {
 	}
 
 	fmt.Println(arrProducts)
+	return arrProducts
 }
 
 // // An endpoint which will add items in the database.
-// func InsertProduct(w http.ResponseWriter, r *http.Request) {
+func InsertProduct(shop_details model.Product) (result string) {
 
-// 	var response model.ProductDetails
+	db := config.Connect()
+	defer db.Close()
 
-// 	db := config.Connect()
-// 	defer db.Close()
+	// inserts item details into product table
+	_, err := db.Exec("INSERT INTO product(name,specs,sku,category,price,productid) VALUES(?,?,?,?,?,?)", shop_details.Name, shop_details.Specs, shop_details.Sku, shop_details.Category, shop_details.Price, shop_details.Productid)
 
-// 	err := r.ParseMultipartForm(4096)
-// 	if err != nil {
-// 		panic(err)
-// 	}
-// 	name := r.FormValue("name")
-// 	specs := r.FormValue("specs")
-// 	sku := r.FormValue("sku")
-// 	category := r.FormValue("category")
-// 	price := r.FormValue("price")
-// 	productid := r.FormValue("productid")
+	if err != nil {
+		log.Print(err)
+		return
+	}
 
-// 	// inserts item details into product table
-// 	_, err = db.Exec("INSERT INTO product(name,specs,sku,category,price,productid) VALUES(?,?,?,?,?,?)", name, specs, sku, category, price, productid)
+	// inserts item details into category table
+	_, err = db.Exec("INSERT INTO category(name,productid) VALUES(?,?)", shop_details.Name, shop_details.Productid)
 
-// 	if err != nil {
-// 		log.Print(err)
-// 		return
-// 	}
+	if err != nil {
+		log.Print(err)
+		return
+	}
 
-// 	// inserts item details into category table
-// 	_, err = db.Exec("INSERT INTO category(name,productid) VALUES(?,?)", name, productid)
+	// inserts item details into inventory table
+	_, err = db.Exec("INSERT INTO inventory(product,quantity,productid) VALUES(?,?,?)", shop_details.Name, 34, shop_details.Productid)
 
-// 	if err != nil {
-// 		log.Print(err)
-// 		return
-// 	}
+	if err != nil {
+		log.Print(err)
+		return
+	}
+	// response.Status = 200
+	// response.Message = "Insert data successfully"
+	fmt.Print("Insert data to database")
+	return "Inserted Successfully"
 
-// 	// inserts item details into inventory table
-// 	_, err = db.Exec("INSERT INTO inventory(product,quantity,productid) VALUES(?,?,?)", name, 34, productid)
+}
 
-// 	if err != nil {
-// 		log.Print(err)
-// 		return
-// 	}
-// 	response.Status = 200
-// 	response.Message = "Insert data successfully"
-// 	fmt.Print("Insert data to database")
+// Get details of a particular product by the ID.
+func GetProduct(id string) model.ProductDetails {
+	var product model.Product
+	var response model.ProductDetails
+	var arrProducts []model.Product
 
-// 	w.Header().Set("Content-Type", "application/json")
-// 	w.Header().Set("Access-Control-Allow-Origin", "*")
-// 	json.NewEncoder(w).Encode(response)
-// }
+	db := config.Connect()
+	defer db.Close()
+	rows, err := db.Query("SELECT id,name,specs,sku,category,price,productid from product where id=?", id)
 
-// // Get details of a particular product by the ID.
-// func GetProduct(w http.ResponseWriter, r *http.Request) {
-// 	var product model.Product
-// 	var response model.ProductDetails
-// 	var arrProducts []model.Product
+	if err != nil {
+		log.Print(err)
+	}
 
-// 	id := r.URL.Query().Get("id")
-// 	db := config.Connect()
-// 	defer db.Close()
-// 	rows, err := db.Query("SELECT id,name,specs,sku,category,price,productid from product where id=" + id)
+	for rows.Next() {
+		err = rows.Scan(&product.Id, &product.Name, &product.Specs, &product.Sku, &product.Category, &product.Price, &product.Productid)
+		if err != nil {
+			log.Fatal(err.Error())
+		} else {
+			arrProducts = append(arrProducts, product)
+		}
+	}
 
-// 	if err != nil {
-// 		log.Print(err)
-// 	}
+	response.Status = 200
+	response.Message = "Success"
+	response.Data = arrProducts
 
-// 	for rows.Next() {
-// 		err = rows.Scan(&product.Id, &product.Name, &product.Specs, &product.Sku, &product.Category, &product.Price, &product.Productid)
-// 		if err != nil {
-// 			log.Fatal(err.Error())
-// 		} else {
-// 			arrProducts = append(arrProducts, product)
-// 		}
-// 	}
+	fmt.Println(response)
+	return response
 
-// 	response.Status = 200
-// 	response.Message = "Success"
-// 	response.Data = arrProducts
-
-// 	w.Header().Set("Content-Type", "application/json")
-// 	w.Header().Set("Access-Control-Allow-Origin", "*")
-// 	json.NewEncoder(w).Encode(response)
-// }
+}
 
 // // add an item to the cart and save it to the database.
 // func AddItemsToCart(w http.ResponseWriter, r *http.Request) {
@@ -273,7 +254,7 @@ func GetProducts() {
 // }
 
 // // adds multiple items to the cart
-func AddItemtoCart() {
+func AddItemtoCart(arr_product []model.ShopDetailsReq) model.InventoryResponse {
 
 	// read the list of items from the user.
 	// var arrResponse []model.ProductRequestDetails
@@ -283,11 +264,10 @@ func AddItemtoCart() {
 	var prod model.Product
 	var unit_price_of_product float32
 	var total_price_details float32
-	var productdetailsreq model.ShopDetailsReq
-	var quantity int
-	var name_product string
-	var option string
-	var arr_product []model.ShopDetailsReq
+	// var productdetailsreq model.ShopDetailsReq
+	// var quantity int
+	// var name_product string
+	// var option string
 
 	db1, err := sql.Open("mysql", "root:1234@tcp(127.0.0.1:3306)/student")
 	// defer db1.Close()
@@ -295,27 +275,26 @@ func AddItemtoCart() {
 		log.Fatal(err)
 	}
 
-	for {
-		fmt.Println("Enter the Product Name")
-		fmt.Scanln(&name_product)
-		fmt.Println("Enter the quantity")
-		fmt.Scanln(&quantity)
+	// for {
+	// 	fmt.Println("Enter the Product Name")
+	// 	fmt.Scanln(&name_product)
+	// 	fmt.Println("Enter the quantity")
+	// 	fmt.Scanln(&quantity)
 
-		productdetailsreq.Name = name_product
-		productdetailsreq.Quantity = quantity
-		arr_product = append(arr_product, productdetailsreq)
+	// 	productdetailsreq.Name = name_product
+	// 	productdetailsreq.Quantity = quantity
+	// 	arr_product = append(arr_product, productdetailsreq)
 
-		fmt.Println("If done adding shop items, press 1")
-		fmt.Scanln(&option)
-		if option == "1" {
-			break
-		}
+	// 	fmt.Println("If done adding shop items, press 1")
+	// 	fmt.Scanln(&option)
+	// 	if option == "1" {
+	// 		break
+	// 	}
 
-	}
+	// }
 
+	fmt.Println(arr_product)
 	for index := range arr_product {
-
-		time.Sleep(1 * time.Second)
 
 		rows, err := db1.Query("SELECT id,name,specs,sku,category,price,productid from product where name=?", arr_product[index].Name)
 
@@ -352,8 +331,9 @@ func AddItemtoCart() {
 		if err != nil {
 			log.Fatal(err.Error())
 		}
-
+		fmt.Println(arrProducts)
 		quantity_from_store := arrProducts[index].Quantity
+		fmt.Printf("done with this also")
 		fmt.Printf("Quantity from store: %v", quantity_from_store)
 
 		if quantity_int <= quantity_from_store {
@@ -408,5 +388,6 @@ func AddItemtoCart() {
 	response.Price = total_price_details
 
 	fmt.Println(response)
+	return response
 
 }
