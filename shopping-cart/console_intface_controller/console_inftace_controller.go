@@ -81,10 +81,10 @@ func InsertProduct(shop_details model.Product) (result string) {
 }
 
 // Get details of a particular product by the ID.
-func GetProduct(id string) model.ProductDetails {
-	var product model.Product
-	var response model.ProductDetails
-	var arrProducts []model.Product
+func GetProduct(id string) model.ProductDetailsConsole {
+	var product model.ProductConsole
+	var response model.ProductDetailsConsole
+	var arrProducts []model.ProductConsole
 
 	db := config.Connect()
 	defer db.Close()

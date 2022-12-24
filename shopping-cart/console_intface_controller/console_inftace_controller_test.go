@@ -1,6 +1,7 @@
 package console_intface_controller
 
 import (
+	"encoding/json"
 	"fmt"
 	"go-crud/model"
 	"testing"
@@ -34,7 +35,7 @@ func TestInsertProduct(T *testing.T) {
 	shop_details.Productid = "Phone-10102"
 	shop_details.Category = "Phone"
 	shop_details.Price = 99000
-	shop_details.Specs = "Motorola-phone-13-dual-sim"
+	shop_details.Specs = json.RawMessage("{size: 13-inch}")
 
 	result := InsertProduct(shop_details)
 	print(result)

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"go-crud/console_intface_controller"
 	"go-crud/logging"
@@ -31,7 +32,7 @@ func main() {
 		router.HandleFunc("/additemstocart", controller.AddItemtoCart).Methods("POST")
 		http.Handle("/", router)
 		fmt.Println("The server is listening on port 1234")
-		log.Fatal(http.ListenAndServe(":1234", router))
+		log.Fatal(http.ListenAndServe("127.0.0.1:1234", router))
 	}
 	// if option == 1, the user enters the system console mode
 	if option == "1" {
@@ -87,10 +88,37 @@ func main() {
 			if system_console_option == "4" {
 
 				var shop_details model.Product
+				var specs_details_map = make(map[string]interface{})
+				var key string
+				var value string
+				var opt string
+				var description string
+				var final_specs string
 				fmt.Println("Enter the name of the product")
 				fmt.Scanln(&shop_details.Name)
-				fmt.Println("Enter the specs of the product")
-				fmt.Scanln(&shop_details.Specs)
+				for {
+					fmt.Println("Enter the specs of the product")
+					fmt.Println("Enter the specs(key) :")
+					fmt.Scanln(&key)
+					fmt.Println("Enter the specs(value) :")
+					fmt.Scanln(&value)
+					specs_details_map[key] = value
+					fmt.Println("To exit, press 1, else press any key to continue adding key/value specs")
+					fmt.Scanln(&opt)
+					if opt == "1" {
+						break
+					} else {
+						continue
+					}
+				}
+				for k, v := range specs_details_map {
+					fmt.Println("k:", k, "v:", v)
+					value_converted := fmt.Sprint(v)
+					description += string(k) + ":" + string(value_converted) + ","
+				}
+				final_specs = "{" + description[0:len(description)-1] + "}"
+				fmt.Println(final_specs)
+				shop_details.Specs = json.RawMessage(final_specs)
 				fmt.Println("Enter the sku of the product")
 				fmt.Scanln(&shop_details.Sku)
 				fmt.Println("Enter the category of the product")

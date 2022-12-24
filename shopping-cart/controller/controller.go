@@ -56,24 +56,35 @@ func GetProducts(w http.ResponseWriter, r *http.Request) {
 // An endpoint which will add items in the database.
 func InsertProduct(w http.ResponseWriter, r *http.Request) {
 
+	reqBody, _ := ioutil.ReadAll(r.Body)
 	var response model.ProductDetails
-
+	var post model.Product
+	// var value_converted string
+	// var description string
 	db := config.Connect()
 	defer db.Close()
+	json.Unmarshal(reqBody, &post)
+	final_specs := string(post.Specs)
+	// for k, v := range post.Specs {
+	// 	fmt.Println("k:", k, "v:", v)
+	// 	value_converted = fmt.Sprint(v)
+	// 	description += string(k) + ":" + string(value_converted) + ","
+	// }
+	// final_specs := description[0 : len(description)-1]
 
-	err := r.ParseMultipartForm(4096)
-	if err != nil {
-		panic(err)
-	}
-	name := r.FormValue("name")
-	specs := r.FormValue("specs")
-	sku := r.FormValue("sku")
-	category := r.FormValue("category")
-	price := r.FormValue("price")
-	productid := r.FormValue("productid")
+	// err := r.ParseMultipartForm(4096)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// name := r.FormValue("name")
+	// specs := r.FormValue("specs")
+	// sku := r.FormValue("sku")
+	// category := r.FormValue("category")
+	// price := r.FormValue("price")
+	// productid := r.FormValue("productid")
 
 	// inserts item details into product table
-	_, err = db.Exec("INSERT INTO product(name,specs,sku,category,price,productid) VALUES(?,?,?,?,?,?)", name, specs, sku, category, price, productid)
+	_, err := db.Exec("INSERT INTO product(name,specs,sku,category,price,productid) VALUES(?,?,?,?,?,?)", post.Name, final_specs, post.Sku, post.Category, post.Price, post.Productid)
 
 	if err != nil {
 		log.Print(err)
@@ -81,7 +92,7 @@ func InsertProduct(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// inserts item details into category table
-	_, err = db.Exec("INSERT INTO category(name,productid) VALUES(?,?)", name, productid)
+	_, err = db.Exec("INSERT INTO category(name,productid) VALUES(?,?)", post.Name, post.Productid)
 
 	if err != nil {
 		log.Print(err)
@@ -89,7 +100,7 @@ func InsertProduct(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// inserts item details into inventory table
-	_, err = db.Exec("INSERT INTO inventory(product,quantity,productid) VALUES(?,?,?)", name, 34, productid)
+	_, err = db.Exec("INSERT INTO inventory(product,quantity,productid) VALUES(?,?,?)", post.Name, 34, post.Productid)
 
 	if err != nil {
 		log.Print(err)

@@ -1,13 +1,34 @@
 package model
 
+import "encoding/json"
+
+// type Product struct {
+// 	Id        int     `form:"id" json:"id"`
+// 	Name      string  `form:"name" json:"name"`
+// 	Sku       string  `form:"sku" json:"sku"`
+// 	Specs     string  `form:"specs" json:"specs"`
+// 	Category  string  `form:"category" json:"category"`
+// 	Price     float32 `form:"price" json:"price"`
+// 	Productid string  `form:"productid" json:"productid"`
+// }
+// Specs     map[string]interface{} `json:"specs"`
 type Product struct {
-	Id        int     `form:"id" json:"id"`
-	Name      string  `form:"name" json:"name"`
-	Sku       string  `form:"sku" json:"sku"`
-	Specs     string  `form:"specs" json:"specs"`
-	Category  string  `form:"category" json:"category"`
-	Price     float32 `form:"price" json:"price"`
-	Productid string  `form:"productid" json:"productid"`
+	Id        int             `json:"id"`
+	Name      string          `json:"name"`
+	Sku       string          `json:"sku"`
+	Specs     json.RawMessage `json:"specs"`
+	Category  string          `json:"category"`
+	Price     float32         `json:"price"`
+	Productid string          `json:"productid"`
+}
+type ProductConsole struct {
+	Id        int     `json:"id"`
+	Name      string  `json:"name"`
+	Sku       string  `json:"sku"`
+	Specs     string  `json:"specs"`
+	Category  string  `json:"category"`
+	Price     float32 `json:"price"`
+	Productid string  `json:"productid"`
 }
 
 type GetProductDetails struct {
@@ -42,6 +63,11 @@ type ProductDetails struct {
 	Status  int    `json:"status"`
 	Message string `json:"message"`
 	Data    []Product
+}
+type ProductDetailsConsole struct {
+	Status  int    `json:"status"`
+	Message string `json:"message"`
+	Data    []ProductConsole
 }
 
 type ProductRequestDetails struct {
