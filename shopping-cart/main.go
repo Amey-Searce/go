@@ -19,7 +19,7 @@ func main() {
 	var system_console_option string
 	fmt.Println("Enter 1 to use System Console. Enter 2 to expose the api endpoints")
 	fmt.Scanln(&option)
-
+	// option = "2"
 	// if option == 2, then the api endpoints are exposed.
 	if option == "2" {
 		logging.InfoLogger.Println("The application is starting")
@@ -31,7 +31,7 @@ func main() {
 		router.HandleFunc("/additemstocart", controller.AddItemtoCart).Methods("POST")
 		http.Handle("/", router)
 		fmt.Println("The server is listening on port 1234")
-		log.Fatal(http.ListenAndServe("127.0.0.1:1234", router))
+		log.Fatal(http.ListenAndServe(":1234", router))
 	}
 	// if option == 1, the user enters the system console mode
 	if option == "1" {
@@ -41,7 +41,8 @@ func main() {
 			fmt.Println("2. Get a particular product")
 			fmt.Println("3. Add to cart ")
 			fmt.Println("4. Insert item to inventory")
-			fmt.Println("5. Exit")
+			fmt.Println("5. Update Cart")
+			fmt.Println("6. Exit")
 			fmt.Println("Enter your choice:")
 			fmt.Scanln(&system_console_option)
 			if system_console_option == "1" {
@@ -101,6 +102,33 @@ func main() {
 				console_intface_controller.InsertProduct(shop_details)
 			}
 			if system_console_option == "5" {
+				var cart_id string
+				var product_id string
+				var update_cart_arr model.UpdateCartBody
+				var update_arr []model.UpdateCartBody
+
+				for {
+					fmt.Println("Enter the Cart ID")
+					fmt.Scanln(&cart_id)
+					fmt.Println("Enter the Product ID")
+					fmt.Scanln(&product_id)
+
+					update_cart_arr.CartId = cart_id
+					update_cart_arr.ProductId = product_id
+					update_arr = append(update_arr, update_cart_arr)
+
+					fmt.Println("If done adding shop items, press 1")
+					fmt.Scanln(&option)
+					if option == "1" {
+						break
+					} else {
+						continue
+					}
+
+				}
+				console_intface_controller.UpdateCart(update_arr)
+			}
+			if system_console_option == "6" {
 				fmt.Println("Exiting...")
 				break
 			}

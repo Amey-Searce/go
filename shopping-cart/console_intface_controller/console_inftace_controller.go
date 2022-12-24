@@ -6,9 +6,16 @@ import (
 	"go-crud/config"
 	"go-crud/model"
 	"log"
+	"strconv"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 )
+
+func GetCartID() int64 {
+	// returns a unique Cart ID
+	return time.Now().UnixNano() / int64(time.Millisecond)
+}
 
 // Returns all the products with details such as Name, Product ID, Specs.
 func GetProducts(page_number int) []model.GetProductDetails {
@@ -256,42 +263,23 @@ func GetProduct(id string) model.ProductDetails {
 // // adds multiple items to the cart
 func AddItemtoCart(arr_product []model.ShopDetailsReq) model.InventoryResponse {
 
-	// read the list of items from the user.
-	// var arrResponse []model.ProductRequestDetails
 	var arrProducts []model.Inventory
 	var response model.InventoryResponse
 	var product model.Inventory
 	var prod model.Product
 	var unit_price_of_product float32
 	var total_price_details float32
-	// var productdetailsreq model.ShopDetailsReq
-	// var quantity int
-	// var name_product string
-	// var option string
-
 	db1, err := sql.Open("mysql", "root:1234@tcp(127.0.0.1:3306)/student")
-	// defer db1.Close()
+
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer db1.Close()
 
-	// for {
-	// 	fmt.Println("Enter the Product Name")
-	// 	fmt.Scanln(&name_product)
-	// 	fmt.Println("Enter the quantity")
-	// 	fmt.Scanln(&quantity)
-
-	// 	productdetailsreq.Name = name_product
-	// 	productdetailsreq.Quantity = quantity
-	// 	arr_product = append(arr_product, productdetailsreq)
-
-	// 	fmt.Println("If done adding shop items, press 1")
-	// 	fmt.Scanln(&option)
-	// 	if option == "1" {
-	// 		break
-	// 	}
-
-	// }
+	// Every new transaction will have a new Cart ID.
+	cart_id_returned := GetCartID()
+	cart_id := strconv.Itoa(int(cart_id_returned))
+	fmt.Println(cart_id)
 
 	fmt.Println(arr_product)
 	for index := range arr_product {
@@ -344,8 +332,7 @@ func AddItemtoCart(arr_product []model.ShopDetailsReq) model.InventoryResponse {
 			fmt.Printf("Quantity from request inside loop :%v", quantity_int)
 			net_quantity_remain := quantity_from_store - quantity_int
 			fmt.Printf("Net quantity: %v", int(net_quantity_remain))
-
-			_, err := db1.Query("INSERT INTO cart(product,quantity,productid,price) VALUES(?,?,?,?)", arr_product[index].Name, quantity_int, arrProducts[index].Productid, total_price)
+			_, err := db1.Query("INSERT INTO cart(product,quantity,productid,price,cartid) VALUES(?,?,?,?,?)", arr_product[index].Name, quantity_int, arrProducts[index].Productid, total_price, cart_id)
 
 			if err != nil {
 				log.Fatal(err.Error())
@@ -385,6 +372,157 @@ func AddItemtoCart(arr_product []model.ShopDetailsReq) model.InventoryResponse {
 	response.Status = 200
 	response.Message = "Success"
 	response.Data = arrProducts
+	response.CartID = cart_id
+	response.Price = total_price_details
+
+	fmt.Println(response)
+	return response
+
+}
+
+func UpdateCart(arr_product []model.UpdateCartBody) model.InventoryResponse {
+
+	var arrProducts []model.Inventory
+	var response model.InventoryResponse
+	var product model.Inventory
+	var product_arr model.Product
+	// var prod model.Cart
+	var unit_price_of_product float32
+	var total_price_details float32
+	var quantity int
+	// var updated_quantity int
+
+	db1, err := sql.Open("mysql", "root:1234@tcp(127.0.0.1:3306)/student")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db1.Close()
+
+	for index := range arr_product {
+
+		fmt.Println("Enter the quanity:")
+		fmt.Scanln(&quantity)
+
+		// get the unit price of the product
+		// rows, err := db1.Query("SELECT id,name,specs,sku,category,price,productid from product where productid=?", arr_product[index].ProductId)
+
+		// if err != nil {
+		// 	log.Print(err)
+		// }
+
+		// for rows.Next() {
+		// 	err = rows.Scan(&product_arr.Id, &product_arr.Name, &product_arr.Specs, &product_arr.Sku, &product_arr.Category, &product_arr.Price, &product_arr.Productid)
+		// 	if err != nil {
+		// 		log.Fatal(err.Error())
+		// 	} else {
+		// 		unit_price_of_product = prod.Price
+		// 	}
+		// }
+		// update query to change quanity based on the product and cart id.
+		// rows, err = db1.Query("Update cart set quantity=? where productid=? and cartid=?", quanity, arr_product[index].ProductId, arr_product[index].CartId)
+
+		// if err != nil {
+		// 	log.Print(err)
+		// }
+
+		// for rows.Next() {
+		// 	err = rows.Scan(&prod.Id, &prod.Product, &prod.Quantity, &prod.Productid, &prod.Price, &prod.Cartid)
+		// 	if err != nil {
+		// 		log.Fatal(err.Error())
+		// 	} else {
+		// 		updated_quantity = prod.Quantity
+		// 	}
+		// }
+
+		// get the total quantity available for that item.
+		rows, err := db1.Query("SELECT id,product,quantity,productid from inventory where productid=?", arr_product[index].ProductId)
+
+		if err != nil {
+			log.Print(err)
+		}
+
+		for rows.Next() {
+			err = rows.Scan(&product.Id, &product.Product, &product.Quantity, &product.Productid)
+			if err != nil {
+				log.Fatal(err.Error())
+			} else {
+				arrProducts = append(arrProducts, product)
+			}
+		}
+
+		quantity_from_store := arrProducts[index].Quantity
+		fmt.Printf("done with this also")
+		fmt.Printf("Quantity from store: %v", quantity_from_store)
+
+		// if the quantity requested is feasible to be ordered.
+		if int(quantity) <= quantity_from_store {
+
+			// get the unit price of the product
+			rows, err := db1.Query("SELECT id,name,specs,sku,category,price,productid from product where productid=?", arr_product[index].ProductId)
+
+			if err != nil {
+				log.Print(err)
+			}
+
+			for rows.Next() {
+				err = rows.Scan(&product_arr.Id, &product_arr.Name, &product_arr.Specs, &product_arr.Sku, &product_arr.Category, &product_arr.Price, &product_arr.Productid)
+				if err != nil {
+					log.Fatal(err.Error())
+				} else {
+					unit_price_of_product = product_arr.Price
+				}
+			}
+
+			total_price := unit_price_of_product * float32(quantity)
+			fmt.Printf("total price: %v", total_price)
+			fmt.Printf("Quantity from store inside loop :%v", quantity_from_store)
+			fmt.Printf("Quantity from request inside loop :%v", quantity)
+			net_quantity_remain := quantity_from_store - quantity
+			fmt.Printf("Net quantity: %v", int(net_quantity_remain))
+
+			// update query to change quantity based on the product and cart id.
+			_, err = db1.Query("Update cart set quantity=? where productid=? and cartid=?", quantity, arr_product[index].ProductId, arr_product[index].CartId)
+
+			if err != nil {
+				log.Print(err)
+			}
+
+			// update the cart with the updated price.
+			_, err = db1.Query("Update cart set price=? where productid=? and cartid=?", total_price, arr_product[index].ProductId, arr_product[index].CartId)
+
+			if err != nil {
+				log.Print(err)
+			}
+
+			// return the total price for all items belonging to that cart.
+			total_price_returned, err := db1.Query("SELECT sum(price) from cart where cartid=?", arr_product[index].CartId)
+			fmt.Printf("Product id %v", arrProducts[index].Productid)
+			if err != nil {
+				log.Fatal(err.Error())
+			}
+
+			for total_price_returned.Next() {
+				err = total_price_returned.Scan(&total_price_details)
+				if err != nil {
+					log.Fatal(err.Error())
+				} else {
+					fmt.Printf("Total price %v", total_price_details)
+				}
+			}
+			_, err = db1.Query("UPDATE inventory SET quantity=? where productid=?", net_quantity_remain, arr_product[index].ProductId)
+
+			if err != nil {
+				log.Fatal(err.Error())
+			}
+
+		}
+	}
+
+	response.Status = 200
+	response.Message = "Success"
+	response.Data = arrProducts
+	response.CartID = arr_product[0].CartId
 	response.Price = total_price_details
 
 	fmt.Println(response)

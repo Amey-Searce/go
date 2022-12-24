@@ -34,6 +34,8 @@ type Cart struct {
 	Product   string
 	Quantity  int
 	Productid string
+	Price     float32
+	Cartid    string
 }
 
 type ProductDetails struct {
@@ -60,10 +62,16 @@ type InventoryResponse struct {
 	Status  int     `json:"status"`
 	Message string  `json:"message"`
 	Price   float32 `json:"price"`
+	CartID  string  `json:"cartid"`
 	Data    []Inventory
 }
 
 type ShopDetailsReq struct {
 	Quantity int
 	Name     string
+}
+
+type UpdateCartBody struct {
+	ProductId string
+	CartId    string
 }

@@ -19,12 +19,11 @@ func GetProducts(w http.ResponseWriter, r *http.Request) {
 	var product model.GetProductDetails
 	var response model.GetProductsDetailsResponse
 	var arrProducts []model.GetProductDetails
-
 	page := r.URL.Query().Get("page")
 	page_int, _ := strconv.Atoi(page)
 	db := config.Connect()
 	defer db.Close()
-
+	// page_int = 1
 	// Added pagination in the query.
 	// 20 records at max should be displayed
 	rows, err := db.Query("SELECT productid, name, specs from product limit 20 offset ?", (page_int-1)*20)
@@ -42,7 +41,7 @@ func GetProducts(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	response.Status = 200
+	response.Status = 400
 	response.Message = "Success"
 	response.Data = arrProducts
 
