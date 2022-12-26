@@ -20,8 +20,8 @@ func main() {
 	var system_console_option string
 	fmt.Println("Enter 1 to use System Console. Enter 2 to expose the api endpoints")
 	fmt.Scanln(&option)
-	// option = "2"
-	// if option == 2, then the api endpoints are exposed.
+
+	// option 2 will expose the below api endpoints
 	if option == "2" {
 		logging.InfoLogger.Println("The application is starting")
 		router := mux.NewRouter()
@@ -30,6 +30,9 @@ func main() {
 		router.HandleFunc("/insertproduct", controller.InsertProduct).Methods("POST")
 		router.HandleFunc("/additemtocart", controller.AddItemsToCart).Methods("GET")
 		router.HandleFunc("/additemstocart", controller.AddItemtoCart).Methods("POST")
+		router.HandleFunc("/updatecart", controller.UpdateCart).Methods("PUT")
+		router.HandleFunc("/deleteitem", controller.DeleteProduct).Methods("DELETE")
+		router.HandleFunc("/updateproduct", controller.UpdateProductDetails).Methods("PUT")
 		http.Handle("/", router)
 		fmt.Println("The server is listening on port 1234")
 		log.Fatal(http.ListenAndServe("127.0.0.1:1234", router))
@@ -133,17 +136,16 @@ func main() {
 				var cart_id string
 				var product_id string
 				var update_cart_arr model.UpdateCartBody
-				var update_arr []model.UpdateCartBody
-
+				var product_id_input model.UpdateCartBodyConsole
+				fmt.Println("Enter the Cart ID")
+				fmt.Scanln(&cart_id)
+				update_cart_arr.CartId = cart_id
 				for {
-					fmt.Println("Enter the Cart ID")
-					fmt.Scanln(&cart_id)
+
 					fmt.Println("Enter the Product ID")
 					fmt.Scanln(&product_id)
-
-					update_cart_arr.CartId = cart_id
-					update_cart_arr.ProductId = product_id
-					update_arr = append(update_arr, update_cart_arr)
+					product_id_input.ProductIdInput = product_id
+					update_cart_arr.ProductId = append(update_cart_arr.ProductId, product_id_input)
 
 					fmt.Println("If done adding shop items, press 1")
 					fmt.Scanln(&option)
@@ -154,7 +156,7 @@ func main() {
 					}
 
 				}
-				console_intface_controller.UpdateCart(update_arr)
+				console_intface_controller.UpdateCart(update_cart_arr)
 			}
 			if system_console_option == "6" {
 				fmt.Println("Exiting...")

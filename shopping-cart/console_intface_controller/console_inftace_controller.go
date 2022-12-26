@@ -380,7 +380,7 @@ func AddItemtoCart(arr_product []model.ShopDetailsReq) model.InventoryResponse {
 
 }
 
-func UpdateCart(arr_product []model.UpdateCartBody) model.InventoryResponse {
+func UpdateCart(arr_product model.UpdateCartBody) model.InventoryResponse {
 
 	var arrProducts []model.Inventory
 	var response model.InventoryResponse
@@ -399,7 +399,8 @@ func UpdateCart(arr_product []model.UpdateCartBody) model.InventoryResponse {
 	}
 	defer db1.Close()
 
-	for index := range arr_product {
+	fmt.Println(arr_product.ProductId[0])
+	for index := range arr_product.ProductId {
 
 		fmt.Println("Enter the quanity:")
 		fmt.Scanln(&quantity)
@@ -436,7 +437,7 @@ func UpdateCart(arr_product []model.UpdateCartBody) model.InventoryResponse {
 		// }
 
 		// get the total quantity available for that item.
-		rows, err := db1.Query("SELECT id,product,quantity,productid from inventory where productid=?", arr_product[index].ProductId)
+		rows, err := db1.Query("SELECT id,product,quantity,productid from inventory where productid=?", arr_product.ProductId[index].ProductIdInput)
 
 		if err != nil {
 			log.Print(err)
@@ -459,7 +460,7 @@ func UpdateCart(arr_product []model.UpdateCartBody) model.InventoryResponse {
 		if int(quantity) <= quantity_from_store {
 
 			// get the unit price of the product
-			rows, err := db1.Query("SELECT id,name,specs,sku,category,price,productid from product where productid=?", arr_product[index].ProductId)
+			rows, err := db1.Query("SELECT id,name,specs,sku,category,price,productid from product where productid=?", arr_product.ProductId[index].ProductIdInput)
 
 			if err != nil {
 				log.Print(err)
@@ -482,21 +483,21 @@ func UpdateCart(arr_product []model.UpdateCartBody) model.InventoryResponse {
 			fmt.Printf("Net quantity: %v", int(net_quantity_remain))
 
 			// update query to change quantity based on the product and cart id.
-			_, err = db1.Query("Update cart set quantity=? where productid=? and cartid=?", quantity, arr_product[index].ProductId, arr_product[index].CartId)
+			_, err = db1.Query("Update cart set quantity=? where productid=? and cartid=?", quantity, arr_product.ProductId[index].ProductIdInput, arr_product.CartId)
 
 			if err != nil {
 				log.Print(err)
 			}
 
 			// update the cart with the updated price.
-			_, err = db1.Query("Update cart set price=? where productid=? and cartid=?", total_price, arr_product[index].ProductId, arr_product[index].CartId)
+			_, err = db1.Query("Update cart set price=? where productid=? and cartid=?", total_price, arr_product.ProductId[index].ProductIdInput, arr_product.CartId)
 
 			if err != nil {
 				log.Print(err)
 			}
 
 			// return the total price for all items belonging to that cart.
-			total_price_returned, err := db1.Query("SELECT sum(price) from cart where cartid=?", arr_product[index].CartId)
+			total_price_returned, err := db1.Query("SELECT sum(price) from cart where cartid=?", arr_product.CartId)
 			fmt.Printf("Product id %v", arrProducts[index].Productid)
 			if err != nil {
 				log.Fatal(err.Error())
@@ -510,7 +511,7 @@ func UpdateCart(arr_product []model.UpdateCartBody) model.InventoryResponse {
 					fmt.Printf("Total price %v", total_price_details)
 				}
 			}
-			_, err = db1.Query("UPDATE inventory SET quantity=? where productid=?", net_quantity_remain, arr_product[index].ProductId)
+			_, err = db1.Query("UPDATE inventory SET quantity=? where productid=?", net_quantity_remain, arr_product.ProductId[index].ProductIdInput)
 
 			if err != nil {
 				log.Fatal(err.Error())
@@ -522,7 +523,7 @@ func UpdateCart(arr_product []model.UpdateCartBody) model.InventoryResponse {
 	response.Status = 200
 	response.Message = "Success"
 	response.Data = arrProducts
-	response.CartID = arr_product[0].CartId
+	response.CartID = arr_product.CartId
 	response.Price = total_price_details
 
 	fmt.Println(response)

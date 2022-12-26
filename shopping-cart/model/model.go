@@ -98,6 +98,23 @@ type ShopDetailsReq struct {
 }
 
 type UpdateCartBody struct {
-	ProductId string
+	ProductId []UpdateCartBodyConsole
 	CartId    string
+}
+
+type UpdateCartBodyConsole struct {
+	ProductIdInput string `json:"productid"`
+}
+
+type UpdateCartBodyApiData struct {
+	CartId string              `json:"cartid"`
+	Data   []UpdateCartBodyApi `json:"data"`
+}
+type UpdateCartBodyApi struct {
+	ProductId string `json:"productid"`
+	Quantity  int    `json:"quantity"`
+}
+type UpdateProduct struct {
+	Specs json.RawMessage `json:"specs"`
+	Price float32         `json:"price"`
 }

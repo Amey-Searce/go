@@ -25,7 +25,7 @@ func GetProducts(w http.ResponseWriter, r *http.Request) {
 	page_int, _ := strconv.Atoi(page)
 	db := config.Connect()
 	defer db.Close()
-	// page_int = 1
+
 	// Added pagination in the query.
 	// 20 records at max should be displayed
 	rows, err := db.Query("SELECT productid, name, specs from product limit 20 offset ?", (page_int-1)*20)
@@ -43,7 +43,7 @@ func GetProducts(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	response.Status = 400
+	response.Status = 200
 	response.Message = "Success"
 	response.Data = arrProducts
 
@@ -59,29 +59,10 @@ func InsertProduct(w http.ResponseWriter, r *http.Request) {
 	reqBody, _ := ioutil.ReadAll(r.Body)
 	var response model.ProductDetails
 	var post model.Product
-	// var value_converted string
-	// var description string
 	db := config.Connect()
 	defer db.Close()
 	json.Unmarshal(reqBody, &post)
 	final_specs := string(post.Specs)
-	// for k, v := range post.Specs {
-	// 	fmt.Println("k:", k, "v:", v)
-	// 	value_converted = fmt.Sprint(v)
-	// 	description += string(k) + ":" + string(value_converted) + ","
-	// }
-	// final_specs := description[0 : len(description)-1]
-
-	// err := r.ParseMultipartForm(4096)
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// name := r.FormValue("name")
-	// specs := r.FormValue("specs")
-	// sku := r.FormValue("sku")
-	// category := r.FormValue("category")
-	// price := r.FormValue("price")
-	// productid := r.FormValue("productid")
 
 	// inserts item details into product table
 	_, err := db.Exec("INSERT INTO product(name,specs,sku,category,price,productid) VALUES(?,?,?,?,?,?)", post.Name, final_specs, post.Sku, post.Category, post.Price, post.Productid)
@@ -124,6 +105,8 @@ func GetProduct(w http.ResponseWriter, r *http.Request) {
 	id := r.URL.Query().Get("id")
 	db := config.Connect()
 	defer db.Close()
+
+	// search the record by the shop ID
 	rows, err := db.Query("SELECT id,name,specs,sku,category,price,productid from product where id=" + id)
 
 	if err != nil {
@@ -158,9 +141,12 @@ func AddItemsToCart(w http.ResponseWriter, r *http.Request) {
 	var unit_price_of_product float32
 	var total_price_details float32
 
+	// retrieve the name from the parameter query
 	name := r.URL.Query().Get("name")
 	db := config.Connect()
 	defer db.Close()
+
+	// retrieve records by the name
 	rows, err := db.Query("SELECT id,name,specs,sku,category,price,productid from product where name=?", name)
 
 	if err != nil {
@@ -182,7 +168,6 @@ func AddItemsToCart(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(reflect.TypeOf(name))
 	fmt.Println(quantity_request)
 	fmt.Println(reflect.TypeOf(quantity_request))
-	// var exists bool
 
 	// Make a call to the inventory table to get the total quantity of that item based on the product name
 	rows, err = db.Query("SELECT id,product,quantity,productid from inventory where product=?", name)
@@ -319,7 +304,7 @@ func AddItemtoCart(w http.ResponseWriter, r *http.Request) {
 
 	// add the values from the request in a list.
 	for index := range post.Response {
-		// fmt.Println(post.Response[index].Product, post.Response[index].Quantity_from_request)
+
 		arrResponse = append(arrResponse, post.Response[index])
 	}
 	fmt.Println(arrResponse)
@@ -416,6 +401,191 @@ func AddItemtoCart(w http.ResponseWriter, r *http.Request) {
 	response.Message = "Success"
 	response.Data = arrProducts
 	response.Price = total_price_details
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	json.NewEncoder(w).Encode(response)
+
+}
+
+// update the cart based on the product ID and cart ID
+func UpdateCart(w http.ResponseWriter, r *http.Request) {
+
+	reqBody, _ := ioutil.ReadAll(r.Body)
+	var arrProducts []model.Inventory
+	var response model.InventoryResponse
+	var product model.Inventory
+	// var post model.UpdateCartBodyApi
+	var update_data model.UpdateCartBodyApiData
+	var product_arr model.Product
+	var unit_price_of_product float32
+	var total_price_details float32
+
+	json.Unmarshal(reqBody, &update_data)
+
+	db1, err := sql.Open("mysql", "root:1234@tcp(127.0.0.1:3306)/student")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db1.Close()
+
+	for index := range update_data.Data {
+		rows, err := db1.Query("SELECT id,product,quantity,productid from inventory where productid=?", update_data.Data[index].ProductId)
+
+		if err != nil {
+			log.Print(err)
+		}
+
+		for rows.Next() {
+			err = rows.Scan(&product.Id, &product.Product, &product.Quantity, &product.Productid)
+			if err != nil {
+				log.Fatal(err.Error())
+			} else {
+				arrProducts = append(arrProducts, product)
+			}
+		}
+
+		quantity_from_store := arrProducts[index].Quantity
+		fmt.Printf("done with this also")
+		fmt.Printf("Quantity from store: %v", quantity_from_store)
+
+		// if the quantity requested is feasible to be ordered.
+		if int(update_data.Data[index].Quantity) <= quantity_from_store {
+
+			// get the unit price of the product
+			rows, err := db1.Query("SELECT id,name,specs,sku,category,price,productid from product where productid=?", update_data.Data[index].ProductId)
+
+			if err != nil {
+				log.Print(err)
+			}
+
+			for rows.Next() {
+				err = rows.Scan(&product_arr.Id, &product_arr.Name, &product_arr.Specs, &product_arr.Sku, &product_arr.Category, &product_arr.Price, &product_arr.Productid)
+				if err != nil {
+					log.Fatal(err.Error())
+				} else {
+					unit_price_of_product = product_arr.Price
+				}
+			}
+
+			total_price := unit_price_of_product * float32(update_data.Data[index].Quantity)
+			fmt.Printf("total price: %v", total_price)
+			fmt.Printf("Quantity from store inside loop :%v", quantity_from_store)
+			fmt.Printf("Quantity from request inside loop :%v", update_data.Data[index].Quantity)
+			net_quantity_remain := quantity_from_store - update_data.Data[index].Quantity
+			fmt.Printf("Net quantity: %v", int(net_quantity_remain))
+
+			// update query to change quantity based on the product and cart id.
+			_, err = db1.Query("Update cart set quantity=? where productid=? and cartid=?", update_data.Data[index].Quantity, update_data.Data[index].ProductId, update_data.CartId)
+
+			if err != nil {
+				log.Print(err)
+			}
+
+			// update the cart with the updated price.
+			_, err = db1.Query("Update cart set price=? where productid=? and cartid=?", total_price, update_data.Data[index].ProductId, update_data.CartId)
+
+			if err != nil {
+				log.Print(err)
+			}
+
+			// return the total price for all items belonging to that cart.
+			total_price_returned, err := db1.Query("SELECT sum(price) from cart where cartid=?", update_data.CartId)
+
+			if err != nil {
+				log.Fatal(err.Error())
+			}
+
+			for total_price_returned.Next() {
+				err = total_price_returned.Scan(&total_price_details)
+				if err != nil {
+					log.Fatal(err.Error())
+				} else {
+					fmt.Printf("Total price %v", total_price_details)
+				}
+			}
+			_, err = db1.Query("UPDATE inventory SET quantity=? where productid=?", net_quantity_remain, update_data.Data[index].ProductId)
+
+			if err != nil {
+				log.Fatal(err.Error())
+			}
+
+		}
+
+	}
+
+	response.Status = 200
+	response.Message = "Success"
+	response.Data = arrProducts
+	response.CartID = update_data.CartId
+	response.Price = total_price_details
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	json.NewEncoder(w).Encode(response)
+
+}
+
+// Delete product details from the database
+func DeleteProduct(w http.ResponseWriter, r *http.Request) {
+
+	product_id := r.URL.Query().Get("productid")
+	var response model.ProductDetails
+	db := config.Connect()
+	defer db.Close()
+
+	// Delete item details from product table
+	_, err := db.Query("Delete from  product where productid=?", product_id)
+
+	if err != nil {
+		log.Print(err)
+		return
+	}
+
+	// inserts item details into category table
+	_, err = db.Exec("Delete from category where productid=?", product_id)
+
+	if err != nil {
+		log.Print(err)
+		return
+	}
+
+	// inserts item details into inventory table
+	_, err = db.Exec("Delete from inventory where productid=?", product_id)
+
+	if err != nil {
+		log.Print(err)
+		return
+	}
+	response.Status = 200
+	response.Message = "Deleted data successfully"
+	fmt.Print("Insert data to database")
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	json.NewEncoder(w).Encode(response)
+}
+
+// Update Details of a product
+func UpdateProductDetails(w http.ResponseWriter, r *http.Request) {
+
+	var response model.InventoryResponse
+	var update_data model.UpdateProduct
+	reqBody, _ := ioutil.ReadAll(r.Body)
+	product_id := r.URL.Query().Get("productid")
+	db := config.Connect()
+	defer db.Close()
+	json.Unmarshal(reqBody, &update_data)
+
+	_, err := db.Query("UPDATE product SET specs=?, price=? where productid=?", update_data.Specs, update_data.Price, product_id)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.Close()
+
+	response.Status = 200
+	response.Message = "Updated Succesfully"
 
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
