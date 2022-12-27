@@ -28,7 +28,6 @@ func main() {
 		router.HandleFunc("/getproducts", controller.GetProducts).Methods("GET")
 		router.HandleFunc("/getproduct", controller.GetProduct).Methods("GET")
 		router.HandleFunc("/insertproduct", controller.InsertProduct).Methods("POST")
-		router.HandleFunc("/additemtocart", controller.AddItemsToCart).Methods("GET")
 		router.HandleFunc("/additemstocart", controller.AddItemtoCart).Methods("POST")
 		router.HandleFunc("/updatecart", controller.UpdateCart).Methods("PUT")
 		router.HandleFunc("/deleteitem", controller.DeleteProduct).Methods("DELETE")
@@ -46,7 +45,9 @@ func main() {
 			fmt.Println("3. Add to cart ")
 			fmt.Println("4. Insert item to inventory")
 			fmt.Println("5. Update Cart")
-			fmt.Println("6. Exit")
+			fmt.Println("6. Delete product")
+			fmt.Println("7. Update Product")
+			fmt.Println("8. Exit")
 			fmt.Println("Enter your choice:")
 			fmt.Scanln(&system_console_option)
 			if system_console_option == "1" {
@@ -159,6 +160,55 @@ func main() {
 				console_intface_controller.UpdateCart(update_cart_arr)
 			}
 			if system_console_option == "6" {
+				var product_id string
+
+				fmt.Println("Enter productid:")
+				fmt.Scanln(&product_id)
+				console_intface_controller.DeleteProduct(product_id)
+			}
+
+			if system_console_option == "7" {
+
+				var shop_details model.Product
+				var productid string
+				var key string
+				var value string
+				var price float32
+				var description string
+				var final_specs string
+				var opt string
+				var specs_details_map = make(map[string]interface{})
+				fmt.Println("Enter the product id")
+				fmt.Scanln(&productid)
+				for {
+					fmt.Println("Enter the specs of the product")
+					fmt.Println("Enter the specs(key) :")
+					fmt.Scanln(&key)
+					fmt.Println("Enter the specs(value) :")
+					fmt.Scanln(&value)
+					specs_details_map[key] = value
+					fmt.Println("To exit, press 1, else press any key to continue adding key/value specs")
+					fmt.Scanln(&opt)
+					if opt == "1" {
+						break
+					} else {
+						continue
+					}
+				}
+				for k, v := range specs_details_map {
+					fmt.Println("k:", k, "v:", v)
+					value_converted := fmt.Sprint(v)
+					description += string(k) + ":" + string(value_converted) + ","
+				}
+				final_specs = "{" + description[0:len(description)-1] + "}"
+				fmt.Println(final_specs)
+				shop_details.Specs = json.RawMessage(final_specs)
+				fmt.Println("Enter price:")
+				fmt.Scanln(&price)
+				console_intface_controller.UpdateProduct(final_specs, price, productid)
+			}
+
+			if system_console_option == "8" {
 				fmt.Println("Exiting...")
 				break
 			}

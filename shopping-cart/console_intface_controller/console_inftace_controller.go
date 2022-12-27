@@ -112,154 +112,6 @@ func GetProduct(id string) model.ProductDetailsConsole {
 
 }
 
-// // add an item to the cart and save it to the database.
-// func AddItemsToCart(w http.ResponseWriter, r *http.Request) {
-
-// 	var product model.Inventory
-// 	var response model.InventoryResponse
-// 	var arrProducts []model.Inventory
-// 	var prod model.Product
-// 	var unit_price_of_product float32
-// 	var total_price_details float32
-
-// 	name := r.URL.Query().Get("name")
-// 	db := config.Connect()
-// 	defer db.Close()
-// 	rows, err := db.Query("SELECT id,name,specs,sku,category,price,productid from product where name=?", name)
-
-// 	if err != nil {
-// 		log.Print(err)
-// 	}
-
-// 	for rows.Next() {
-// 		err = rows.Scan(&prod.Id, &prod.Name, &prod.Specs, &prod.Sku, &prod.Category, &prod.Price, &prod.Productid)
-// 		if err != nil {
-// 			log.Fatal(err.Error())
-// 		} else {
-// 			unit_price_of_product = prod.Price
-// 		}
-// 	}
-
-// 	// user sends a request with the product name and quantity
-// 	quantity_request := r.URL.Query().Get("quantity")
-// 	fmt.Println(name)
-// 	fmt.Println(reflect.TypeOf(name))
-// 	fmt.Println(quantity_request)
-// 	fmt.Println(reflect.TypeOf(quantity_request))
-// 	// var exists bool
-
-// 	// Make a call to the inventory table to get the total quantity of that item based on the product name
-// 	rows, err = db.Query("SELECT id,product,quantity,productid from inventory where product=?", name)
-// 	fmt.Println(rows)
-
-// 	if err != nil {
-// 		log.Print(err)
-// 	}
-// 	fmt.Println("Completed first query")
-// 	for rows.Next() {
-// 		err = rows.Scan(&product.Id, &product.Product, &product.Quantity, &product.Productid)
-// 		if err != nil {
-// 			log.Fatal(err.Error())
-// 		} else {
-// 			arrProducts = append(arrProducts, product)
-// 		}
-// 	}
-// 	fmt.Println(arrProducts)
-// 	fmt.Println("Completed second query")
-// 	quantity_int, err := strconv.Atoi(quantity_request)
-
-// 	fmt.Println(quantity_int)
-// 	fmt.Println(reflect.TypeOf(quantity_int))
-
-// 	if err != nil {
-// 		log.Fatal(err.Error())
-// 	}
-
-// 	quantity_from_store := arrProducts[0].Quantity
-
-// 	fmt.Println(quantity_from_store)
-// 	fmt.Println(reflect.TypeOf(quantity_from_store))
-
-// 	if quantity_int <= quantity_from_store {
-
-// 		// The net quantity remaining after the user adds the item in the cart.
-// 		total_price := unit_price_of_product * float32(quantity_int)
-// 		fmt.Printf("total price: %v", total_price)
-// 		net_quantity_remain := quantity_from_store - quantity_int
-
-// 		// checks if the record is present in the cart or not.
-// 		// res, err1 := db.Query("select exists(select * from cart where productid=?)", arrProducts[0].Productid)
-
-// 		// if err1 != nil {
-// 		// 	log.Fatal(err.Error())
-// 		// }
-
-// 		// for res.Next() {
-// 		// 	err = res.Scan(&exists)
-// 		// 	if err != nil && err != sql.ErrNoRows {
-// 		// 		log.Fatal(err.Error())
-// 		// 	} else {
-// 		// 		fmt.Println(exists)
-// 		// 	}
-// 		// }
-
-// 		// if err1 != nil {
-// 		// 	log.Fatal(err.Error())
-// 		// }
-// 		// if the cart doesnt have the shop details, then insert a new record.
-// 		// if !exists {
-// 		_, err := db.Query("INSERT INTO cart(product,quantity,productid,price) VALUES(?,?,?,?)", arrProducts[0].Product, quantity_int, arrProducts[0].Productid, total_price)
-
-// 		if err != nil {
-// 			log.Fatal(err.Error())
-// 		}
-// 		total_price_returned, err := db.Query("SELECT sum(price) from cart")
-
-// 		if err != nil {
-// 			log.Fatal(err.Error())
-// 		}
-
-// 		for total_price_returned.Next() {
-// 			err = total_price_returned.Scan(&total_price_details)
-// 			if err != nil {
-// 				log.Fatal(err.Error())
-// 			} else {
-// 				fmt.Printf("Total price %v", total_price_details)
-// 			}
-// 		}
-
-// 		// } else {
-// 		// 	_, err = db.Query("UPDATE cart SET quantity=? where productid=?", quantity_int, arrProducts[0].Productid)
-// 		// 	if err != nil {
-// 		// 		log.Fatal(err.Error())
-// 		// 	}
-// 		// }
-// 		// update the inventory table with the net amount for that product.
-// 		rows, err = db.Query("UPDATE inventory SET quantity=? where productid=?", net_quantity_remain, arrProducts[0].Productid)
-
-// 		if err != nil {
-// 			log.Fatal(err.Error())
-// 		}
-// 		for rows.Next() {
-// 			err = rows.Scan(&product.Id, &product.Product, &product.Quantity, &product.Productid)
-// 			if err != nil {
-// 				log.Fatal(err.Error())
-// 			} else {
-// 				arrProducts = append(arrProducts, product)
-// 			}
-// 		}
-// 	}
-
-// 	response.Status = 200
-// 	response.Message = "Success"
-// 	response.Data = arrProducts
-// 	response.Price = total_price_details
-
-// 	w.Header().Set("Content-Type", "application/json")
-// 	w.Header().Set("Access-Control-Allow-Origin", "*")
-// 	json.NewEncoder(w).Encode(response)
-// }
-
 // // adds multiple items to the cart
 func AddItemtoCart(arr_product []model.ShopDetailsReq) model.InventoryResponse {
 
@@ -405,37 +257,6 @@ func UpdateCart(arr_product model.UpdateCartBody) model.InventoryResponse {
 		fmt.Println("Enter the quanity:")
 		fmt.Scanln(&quantity)
 
-		// get the unit price of the product
-		// rows, err := db1.Query("SELECT id,name,specs,sku,category,price,productid from product where productid=?", arr_product[index].ProductId)
-
-		// if err != nil {
-		// 	log.Print(err)
-		// }
-
-		// for rows.Next() {
-		// 	err = rows.Scan(&product_arr.Id, &product_arr.Name, &product_arr.Specs, &product_arr.Sku, &product_arr.Category, &product_arr.Price, &product_arr.Productid)
-		// 	if err != nil {
-		// 		log.Fatal(err.Error())
-		// 	} else {
-		// 		unit_price_of_product = prod.Price
-		// 	}
-		// }
-		// update query to change quanity based on the product and cart id.
-		// rows, err = db1.Query("Update cart set quantity=? where productid=? and cartid=?", quanity, arr_product[index].ProductId, arr_product[index].CartId)
-
-		// if err != nil {
-		// 	log.Print(err)
-		// }
-
-		// for rows.Next() {
-		// 	err = rows.Scan(&prod.Id, &prod.Product, &prod.Quantity, &prod.Productid, &prod.Price, &prod.Cartid)
-		// 	if err != nil {
-		// 		log.Fatal(err.Error())
-		// 	} else {
-		// 		updated_quantity = prod.Quantity
-		// 	}
-		// }
-
 		// get the total quantity available for that item.
 		rows, err := db1.Query("SELECT id,product,quantity,productid from inventory where productid=?", arr_product.ProductId[index].ProductIdInput)
 
@@ -528,5 +349,55 @@ func UpdateCart(arr_product model.UpdateCartBody) model.InventoryResponse {
 
 	fmt.Println(response)
 	return response
+
+}
+
+func DeleteProduct(product_id string) {
+
+	var response model.ProductDetails
+	db := config.Connect()
+	defer db.Close()
+
+	// Delete item details from product table
+	_, err := db.Query("Delete from  product where productid=?", product_id)
+
+	if err != nil {
+		log.Print(err)
+		return
+	}
+
+	// inserts item details into category table
+	_, err = db.Exec("Delete from category where productid=?", product_id)
+
+	if err != nil {
+		log.Print(err)
+		return
+	}
+
+	// inserts item details into inventory table
+	_, err = db.Exec("Delete from inventory where productid=?", product_id)
+
+	if err != nil {
+		log.Print(err)
+		return
+	}
+	response.Status = 200
+	response.Message = "Deleted data successfully"
+	fmt.Print("Insert data to database")
+
+}
+
+func UpdateProduct(specs string, price float32, product_id string) {
+
+	db := config.Connect()
+	defer db.Close()
+	_, err := db.Exec("UPDATE Product Set specs=?,price=? where productid=?", specs, price, product_id)
+
+	if err != nil {
+		log.Print(err)
+		return
+	}
+
+	fmt.Print("Updated Product")
 
 }
