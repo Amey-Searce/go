@@ -1,0 +1,2 @@
+INFO: 2022/12/30 02:55:48 console_inftace_controller.go:24: Inside GetPrdoucts Function
+INFO: 2022/12/30 03:05:51 console_inftace_controller.go:24: Inside GetPrdoucts Function

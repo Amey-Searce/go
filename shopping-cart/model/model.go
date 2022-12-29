@@ -103,6 +103,15 @@ type InventoryAdditionalResponse struct {
 	Data             []Inventory
 	ShortageResponse string
 }
+type InventoryAdditionalResponse2 struct {
+	Status           int     `json:"status"`
+	Message          string  `json:"message"`
+	Price            float32 `json:"price"`
+	CartID           string  `json:"cartid"`
+	Data             []Inventory
+	ShortageResponse string
+	NotfoundResponse string
+}
 
 type ShopDetailsReq struct {
 	Quantity int

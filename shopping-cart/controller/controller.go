@@ -98,11 +98,43 @@ func InsertProduct(w http.ResponseWriter, r *http.Request) {
 
 	if len(post.Productid) == 0 {
 
-		logging.ErrorLogger.Println("Bad Request. Product ID can't be empty")
+		logging.ErrorLogger.Println("Bad Request. Field can't be empty")
 		w.Header().Set("Content-Type", "application/json")
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.WriteHeader(400)
-		json.NewEncoder(w).Encode("Bad Request. Product ID can't be empty")
+		json.NewEncoder(w).Encode("Bad Request. Field can't be empty")
+		return
+
+	}
+	if len(post.Name) == 0 {
+
+		logging.ErrorLogger.Println("Bad Request. Field can't be empty")
+		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.WriteHeader(400)
+		json.NewEncoder(w).Encode("Bad Request. Field can't be empty")
+		return
+
+	}
+
+	if len(fmt.Sprint(post.Quantity)) == 0 {
+
+		logging.ErrorLogger.Println("Bad Request. Field can't be empty")
+		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.WriteHeader(400)
+		json.NewEncoder(w).Encode("Bad Request. Field can't be empty")
+		return
+
+	}
+
+	if len(fmt.Sprint(post.Price)) == 0 {
+
+		logging.ErrorLogger.Println("Bad Request. Field can't be empty")
+		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.WriteHeader(400)
+		json.NewEncoder(w).Encode("Bad Request. Field can't be empty")
 		return
 
 	}
@@ -221,15 +253,20 @@ func AddItemtoCart(w http.ResponseWriter, r *http.Request) {
 	var post model.ProductRequestDetails2
 	var arrResponse []model.ProductRequestDetails
 	var arrProducts []model.Inventory
-	var response model.InventoryAdditionalResponse
+	var response model.InventoryAdditionalResponse2
 	var product model.Inventory
+	var productEmpty model.Inventory
 	var arrProductsEmpty []model.Inventory
 	var FinalOrderList []model.Inventory
 	var prod model.Product
 	var unit_price_of_product float32
 	var total_price_details float32
 	var less_quantity_inventory string
+	var not_found_inventory string
 	var not_placed_order int
+	var not_found_order int
+	var quantity_from_store int
+	var records_returned int
 
 	json.Unmarshal(reqBody, &post)
 
@@ -250,128 +287,75 @@ func AddItemtoCart(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// add the values from the request in a list.
 	for index := range post.Response {
 
 		arrResponse = append(arrResponse, post.Response[index])
 	}
 	fmt.Println(arrResponse)
+
 	for index := range arrResponse {
-
-		logging.InfoLogger.Println("Made a query to product table")
-		rows, err := db1.Query("SELECT id,name,specs,sku,category,price,productid from product where name=?", arrResponse[index].Product)
+		rows, err := db1.Query("SELECT COUNT(*) FROM student.product WHERE name=?", arrResponse[index].Product)
 
 		if err != nil {
 			logging.ErrorLogger.Println(err)
 			w.Header().Set("Content-Type", "application/json")
 			w.Header().Set("Access-Control-Allow-Origin", "*")
 			w.WriteHeader(500)
+			json.NewEncoder(w).Encode("Not able to find the record ")
 			return
-		}
 
+		}
 		for rows.Next() {
-			err = rows.Scan(&prod.Id, &prod.Name, &prod.Specs, &prod.Sku, &prod.Category, &prod.Price, &prod.Productid)
+			err = rows.Scan(&records_returned)
 			if err != nil {
 				logging.ErrorLogger.Println(err)
 				w.Header().Set("Content-Type", "application/json")
 				w.Header().Set("Access-Control-Allow-Origin", "*")
 				w.WriteHeader(500)
+				json.NewEncoder(w).Encode("Not able to find the record ")
 				return
-			} else {
-				unit_price_of_product = prod.Price
-				logging.InfoLogger.Println("Unit Price of the Product:", unit_price_of_product)
+
 			}
-		}
-		logging.InfoLogger.Println("Query made to invenotry table")
-		rows, err = db1.Query("SELECT id,product,quantity,productid from inventory where product=?", arrResponse[index].Product)
-
-		if err != nil {
-			log.Print(err)
+			fmt.Println(records_returned)
 		}
 
-		for rows.Next() {
-			err = rows.Scan(&product.Id, &product.Product, &product.Quantity, &product.Productid)
+		// add the values from the request in a list.
+		// for index := range post.Response {
+
+		// 	arrResponse = append(arrResponse, post.Response[index])
+		// }
+		// fmt.Println(arrResponse)
+		// for index := range arrResponse {
+		if records_returned != 0 {
+			logging.InfoLogger.Println("Made a query to product table")
+			rows, err = db1.Query("SELECT id,name,specs,sku,category,price,productid from product where name=?", arrResponse[index].Product)
+
 			if err != nil {
 				logging.ErrorLogger.Println(err)
 				w.Header().Set("Content-Type", "application/json")
 				w.Header().Set("Access-Control-Allow-Origin", "*")
 				w.WriteHeader(500)
+				json.NewEncoder(w).Encode("Not able to find the record ")
 				return
-			} else {
-				arrProducts = append(arrProducts, product)
-			}
-		}
-		quantity_request := int(arrResponse[index].Quantity_from_request)
-		logging.InfoLogger.Printf("Quantiy from request:%v", quantity_request)
-		quantity_int := quantity_request
 
-		if err != nil {
-			logging.ErrorLogger.Println(err)
-			w.Header().Set("Content-Type", "application/json")
-			w.Header().Set("Access-Control-Allow-Origin", "*")
-			w.WriteHeader(500)
-			return
-		}
-
-		quantity_from_store := arrProducts[index].Quantity
-		fmt.Printf("Quantity from store: %v", quantity_from_store)
-
-		if quantity_int <= quantity_from_store {
-
-			logging.InfoLogger.Println("Quantity requested is less than the inventory quantity")
-			total_price := unit_price_of_product * float32(quantity_int)
-			logging.InfoLogger.Printf("total price: %v", total_price)
-			logging.InfoLogger.Printf("Quantity from store inside loop :%v", quantity_from_store)
-			logging.InfoLogger.Printf("Quantity from request inside loop :%v", quantity_int)
-			net_quantity_remain := quantity_from_store - quantity_int
-			logging.InfoLogger.Printf("Net quantity: %v", int(net_quantity_remain))
-
-			_, err := db1.Query("INSERT INTO cart(product,quantity,productid,price,cartid) VALUES(?,?,?,?,?)", arrProducts[index].Product, quantity_int, arrProducts[index].Productid, total_price, cart_id)
-
-			if err != nil {
-				logging.ErrorLogger.Println(err)
-				w.Header().Set("Content-Type", "application/json")
-				w.Header().Set("Access-Control-Allow-Origin", "*")
-				w.WriteHeader(500)
 			}
 
-			total_price_returned, err := db1.Query("SELECT sum(price) from cart where cartid=?", cart_id)
-			fmt.Printf("Product id %v", arrProducts[index].Productid)
-			if err != nil {
-				log.Fatal(err.Error())
-			}
-
-			for total_price_returned.Next() {
-				err = total_price_returned.Scan(&total_price_details)
-				if err != nil {
-					logging.ErrorLogger.Println(err)
-					w.Header().Set("Content-Type", "application/json")
-					w.Header().Set("Access-Control-Allow-Origin", "*")
-					w.WriteHeader(500)
-				} else {
-					fmt.Printf("Total price %v", total_price_details)
-				}
-			}
-			rows, err = db1.Query("UPDATE inventory SET quantity=? where productid=?", net_quantity_remain, arrProducts[index].Productid)
-
-			if err != nil {
-				logging.ErrorLogger.Println(err)
-				w.Header().Set("Content-Type", "application/json")
-				w.Header().Set("Access-Control-Allow-Origin", "*")
-				w.WriteHeader(500)
-			}
-
+			fmt.Println("In this for loop")
 			for rows.Next() {
-				err = rows.Scan(&product.Id, &product.Product, &product.Quantity, &product.Productid)
+				err = rows.Scan(&prod.Id, &prod.Name, &prod.Specs, &prod.Sku, &prod.Category, &prod.Price, &prod.Productid)
 				if err != nil {
 					logging.ErrorLogger.Println(err)
 					w.Header().Set("Content-Type", "application/json")
 					w.Header().Set("Access-Control-Allow-Origin", "*")
 					w.WriteHeader(500)
+					return
+				} else {
+					unit_price_of_product = prod.Price
+					logging.InfoLogger.Println("Unit Price of the Product:", unit_price_of_product)
 				}
-
 			}
 
+			logging.InfoLogger.Println("Query made to invenotry table")
 			rows, err = db1.Query("SELECT id,product,quantity,productid from inventory where product=?", arrResponse[index].Product)
 
 			if err != nil {
@@ -387,17 +371,113 @@ func AddItemtoCart(w http.ResponseWriter, r *http.Request) {
 					w.WriteHeader(500)
 					return
 				} else {
-					product.Quantity = quantity_int
-					FinalOrderList = append(FinalOrderList, product)
+					arrProducts = append(arrProducts, product)
 				}
 			}
+			quantity_request := int(arrResponse[index].Quantity_from_request)
+			logging.InfoLogger.Printf("Quantiy from request:%v", quantity_request)
+			quantity_int := quantity_request
 
+			if err != nil {
+				logging.ErrorLogger.Println(err)
+				w.Header().Set("Content-Type", "application/json")
+				w.Header().Set("Access-Control-Allow-Origin", "*")
+				w.WriteHeader(500)
+				json.NewEncoder(w).Encode("Not able to find the record ")
+				return
+			}
+
+			quantity_from_store = arrProducts[index].Quantity
+			fmt.Println(quantity_from_store)
+
+			if quantity_int <= quantity_from_store {
+
+				logging.InfoLogger.Println("Quantity requested is less than the inventory quantity")
+				total_price := unit_price_of_product * float32(quantity_int)
+				logging.InfoLogger.Printf("total price: %v", total_price)
+				logging.InfoLogger.Printf("Quantity from store inside loop :%v", quantity_from_store)
+				logging.InfoLogger.Printf("Quantity from request inside loop :%v", quantity_int)
+				net_quantity_remain := quantity_from_store - quantity_int
+				logging.InfoLogger.Printf("Net quantity: %v", int(net_quantity_remain))
+
+				_, err := db1.Query("INSERT INTO cart(product,quantity,productid,price,cartid) VALUES(?,?,?,?,?)", arrProducts[index].Product, quantity_int, arrProducts[index].Productid, total_price, cart_id)
+
+				if err != nil {
+					logging.ErrorLogger.Println(err)
+					w.Header().Set("Content-Type", "application/json")
+					w.Header().Set("Access-Control-Allow-Origin", "*")
+					w.WriteHeader(500)
+				}
+
+				total_price_returned, err := db1.Query("SELECT sum(price) from cart where cartid=?", cart_id)
+				fmt.Printf("Product id %v", arrProducts[index].Productid)
+				if err != nil {
+					log.Fatal(err.Error())
+				}
+
+				for total_price_returned.Next() {
+					err = total_price_returned.Scan(&total_price_details)
+					if err != nil {
+						logging.ErrorLogger.Println(err)
+						w.Header().Set("Content-Type", "application/json")
+						w.Header().Set("Access-Control-Allow-Origin", "*")
+						w.WriteHeader(500)
+					} else {
+						fmt.Printf("Total price %v", total_price_details)
+					}
+				}
+				rows, err = db1.Query("UPDATE inventory SET quantity=? where productid=?", net_quantity_remain, arrProducts[index].Productid)
+
+				if err != nil {
+					logging.ErrorLogger.Println(err)
+					w.Header().Set("Content-Type", "application/json")
+					w.Header().Set("Access-Control-Allow-Origin", "*")
+					w.WriteHeader(500)
+				}
+
+				for rows.Next() {
+					err = rows.Scan(&product.Id, &product.Product, &product.Quantity, &product.Productid)
+					if err != nil {
+						logging.ErrorLogger.Println(err)
+						w.Header().Set("Content-Type", "application/json")
+						w.Header().Set("Access-Control-Allow-Origin", "*")
+						w.WriteHeader(500)
+					}
+
+				}
+
+				rows, err = db1.Query("SELECT id,product,quantity,productid from inventory where product=?", arrResponse[index].Product)
+
+				if err != nil {
+					log.Print(err)
+				}
+
+				for rows.Next() {
+					err = rows.Scan(&product.Id, &product.Product, &product.Quantity, &product.Productid)
+					if err != nil {
+						logging.ErrorLogger.Println(err)
+						w.Header().Set("Content-Type", "application/json")
+						w.Header().Set("Access-Control-Allow-Origin", "*")
+						w.WriteHeader(500)
+						return
+					} else {
+						product.Quantity = quantity_int
+						FinalOrderList = append(FinalOrderList, product)
+					}
+				}
+			} else {
+				less_quantity_inventory += "  The product with name: " + arrResponse[index].Product + " is less in number in the inventory. Cannot place this item. "
+				not_placed_order += 1
+			}
 		} else {
-			less_quantity_inventory += "  The product with name: " + arrResponse[index].Product + " is less in number in the inventory. Cannot place this item. "
-			not_placed_order += 1
+			fmt.Println("Inhere ")
+			not_found_inventory += "  The product with name: " + arrResponse[index].Product + " is not found in the inventory. Cannot place this item. "
+			fmt.Println(not_found_inventory)
+			not_found_order += 1
+			arrProducts = append(arrProducts, productEmpty)
+
 		}
 	}
-
 	response.Status = 200
 	response.Message = "Success"
 	if not_placed_order == len(arrProducts) {
@@ -407,10 +487,16 @@ func AddItemtoCart(w http.ResponseWriter, r *http.Request) {
 	}
 	response.Price = total_price_details
 	response.CartID = cart_id
+	if not_found_order != 0 {
+		response.NotfoundResponse = not_found_inventory
+	} else {
+		response.NotfoundResponse = "N/A"
+	}
 	if len(less_quantity_inventory) != 0 {
 		response.ShortageResponse = less_quantity_inventory
 	} else {
-		response.ShortageResponse = "No shortage in the products placed for cart ID: " + cart_id
+		response.ShortageResponse = "N/A"
+		//"No shortage in the products placed for cart ID: " + cart_id
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -425,7 +511,7 @@ func UpdateCart(w http.ResponseWriter, r *http.Request) {
 	reqBody, _ := ioutil.ReadAll(r.Body)
 	var arrProducts []model.Inventory
 	var arrProductsEmpty []model.Inventory
-	var response model.InventoryAdditionalResponse
+	var response model.InventoryAdditionalResponse2
 	var product model.Inventory
 	// var post model.UpdateCartBodyApi
 	var FinalOrderList []model.Inventory
@@ -434,7 +520,12 @@ func UpdateCart(w http.ResponseWriter, r *http.Request) {
 	var unit_price_of_product float32
 	var total_price_details float32
 	var less_quantity_inventory string
+	var not_found_inventory string
 	var not_placed_order int
+	var records_returned int
+	var productEmpty model.Inventory
+	var not_found_order int
+	var cart_exists int
 
 	json.Unmarshal(reqBody, &update_data)
 
@@ -448,139 +539,185 @@ func UpdateCart(w http.ResponseWriter, r *http.Request) {
 	}
 	defer db1.Close()
 
-	for index := range update_data.Data {
-		rows, err := db1.Query("SELECT id,product,quantity,productid from inventory where productid=?", update_data.Data[index].ProductId)
-
+	rows, err := db1.Query("SELECT COUNT(*) from cart where cartid=?", update_data.CartId)
+	if err != nil {
+		logging.ErrorLogger.Println(err)
+		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.WriteHeader(500)
+	}
+	for rows.Next() {
+		err = rows.Scan(&cart_exists)
 		if err != nil {
 			logging.ErrorLogger.Println(err)
 			w.Header().Set("Content-Type", "application/json")
 			w.Header().Set("Access-Control-Allow-Origin", "*")
 			w.WriteHeader(500)
 		}
+	}
+	if cart_exists != 0 {
+		for index := range update_data.Data {
 
-		for rows.Next() {
-			err = rows.Scan(&product.Id, &product.Product, &product.Quantity, &product.Productid)
+			rows, err = db1.Query("SELECT COUNT(*) from inventory where productid=?", update_data.Data[index].ProductId)
 			if err != nil {
 				logging.ErrorLogger.Println(err)
 				w.Header().Set("Content-Type", "application/json")
 				w.Header().Set("Access-Control-Allow-Origin", "*")
 				w.WriteHeader(500)
+			}
+			for rows.Next() {
+				err = rows.Scan(&records_returned)
+				if err != nil {
+					logging.ErrorLogger.Println(err)
+					w.Header().Set("Content-Type", "application/json")
+					w.Header().Set("Access-Control-Allow-Origin", "*")
+					w.WriteHeader(500)
+				}
+			}
+			if (records_returned) != 0 {
+
+				rows, err := db1.Query("SELECT id,product,quantity,productid from inventory where productid=?", update_data.Data[index].ProductId)
+
+				if err != nil {
+					logging.ErrorLogger.Println(err)
+					w.Header().Set("Content-Type", "application/json")
+					w.Header().Set("Access-Control-Allow-Origin", "*")
+					w.WriteHeader(500)
+				}
+
+				for rows.Next() {
+					err = rows.Scan(&product.Id, &product.Product, &product.Quantity, &product.Productid)
+					if err != nil {
+						logging.ErrorLogger.Println(err)
+						w.Header().Set("Content-Type", "application/json")
+						w.Header().Set("Access-Control-Allow-Origin", "*")
+						w.WriteHeader(500)
+					} else {
+						arrProducts = append(arrProducts, product)
+					}
+				}
+
+				quantity_from_store := arrProducts[index].Quantity
+				fmt.Printf("done with this also")
+				fmt.Printf("Quantity from store: %v", quantity_from_store)
+
+				// if the quantity requested is feasible to be ordered.
+				if int(update_data.Data[index].Quantity) <= quantity_from_store {
+
+					// get the unit price of the product
+					rows, err := db1.Query("SELECT id,name,specs,sku,category,price,productid from product where productid=?", update_data.Data[index].ProductId)
+
+					if err != nil {
+						logging.ErrorLogger.Println(err)
+						w.Header().Set("Content-Type", "application/json")
+						w.Header().Set("Access-Control-Allow-Origin", "*")
+						w.WriteHeader(500)
+					}
+
+					for rows.Next() {
+						err = rows.Scan(&product_arr.Id, &product_arr.Name, &product_arr.Specs, &product_arr.Sku, &product_arr.Category, &product_arr.Price, &product_arr.Productid)
+						if err != nil {
+							logging.ErrorLogger.Println(err)
+							w.Header().Set("Content-Type", "application/json")
+							w.Header().Set("Access-Control-Allow-Origin", "*")
+							w.WriteHeader(500)
+						} else {
+							unit_price_of_product = product_arr.Price
+						}
+					}
+
+					total_price := unit_price_of_product * float32(update_data.Data[index].Quantity)
+					fmt.Printf("total price: %v", total_price)
+					fmt.Printf("Quantity from store inside loop :%v", quantity_from_store)
+					fmt.Printf("Quantity from request inside loop :%v", update_data.Data[index].Quantity)
+					net_quantity_remain := quantity_from_store - update_data.Data[index].Quantity
+					fmt.Printf("Net quantity: %v", int(net_quantity_remain))
+
+					// update query to change quantity based on the product and cart id.
+					_, err = db1.Query("Update cart set quantity=? where productid=? and cartid=?", update_data.Data[index].Quantity, update_data.Data[index].ProductId, update_data.CartId)
+
+					if err != nil {
+						logging.ErrorLogger.Println(err)
+						w.Header().Set("Content-Type", "application/json")
+						w.Header().Set("Access-Control-Allow-Origin", "*")
+						w.WriteHeader(500)
+					}
+
+					// update the cart with the updated price.
+					_, err = db1.Query("Update cart set price=? where productid=? and cartid=?", total_price, update_data.Data[index].ProductId, update_data.CartId)
+
+					if err != nil {
+						logging.ErrorLogger.Println(err)
+						w.Header().Set("Content-Type", "application/json")
+						w.Header().Set("Access-Control-Allow-Origin", "*")
+						w.WriteHeader(500)
+					}
+
+					// return the total price for all items belonging to that cart.
+					total_price_returned, err := db1.Query("SELECT sum(price) from cart where cartid=?", update_data.CartId)
+
+					if err != nil {
+						logging.ErrorLogger.Println(err)
+						w.Header().Set("Content-Type", "application/json")
+						w.Header().Set("Access-Control-Allow-Origin", "*")
+						w.WriteHeader(500)
+					}
+
+					for total_price_returned.Next() {
+						err = total_price_returned.Scan(&total_price_details)
+						if err != nil {
+							logging.ErrorLogger.Println(err)
+							w.Header().Set("Content-Type", "application/json")
+							w.Header().Set("Access-Control-Allow-Origin", "*")
+							w.WriteHeader(500)
+						} else {
+							fmt.Printf("Total price %v", total_price_details)
+						}
+					}
+
+					_, err = db1.Query("UPDATE inventory SET quantity=? where productid=?", net_quantity_remain, update_data.Data[index].ProductId)
+
+					if err != nil {
+						logging.ErrorLogger.Println(err)
+						w.Header().Set("Content-Type", "application/json")
+						w.Header().Set("Access-Control-Allow-Origin", "*")
+						w.WriteHeader(500)
+					}
+
+					rows, err = db1.Query("SELECT id,product,quantity,productid from inventory where productid=?", update_data.Data[index].ProductId)
+
+					if err != nil {
+						log.Print(err)
+					}
+
+					for rows.Next() {
+						err = rows.Scan(&product.Id, &product.Product, &product.Quantity, &product.Productid)
+						if err != nil {
+							logging.ErrorLogger.Println(err)
+							w.Header().Set("Content-Type", "application/json")
+							w.Header().Set("Access-Control-Allow-Origin", "*")
+							w.WriteHeader(500)
+							return
+						} else {
+							product.Quantity = update_data.Data[index].Quantity
+							FinalOrderList = append(FinalOrderList, product)
+						}
+					}
+
+				} else {
+					less_quantity_inventory += "  The product with ID: " + update_data.Data[index].ProductId + " is less in number in the invenotry. Cannot place this item. "
+					not_placed_order += 1
+				}
 			} else {
-				arrProducts = append(arrProducts, product)
+				fmt.Println("Inhere ")
+				not_found_inventory += "  The product with ID: " + update_data.Data[index].ProductId + " is not found in the inventory. Cannot place this item. "
+				fmt.Println(not_found_inventory)
+				not_found_order += 1
+				arrProducts = append(arrProducts, productEmpty)
+
 			}
+
 		}
-
-		quantity_from_store := arrProducts[index].Quantity
-		fmt.Printf("done with this also")
-		fmt.Printf("Quantity from store: %v", quantity_from_store)
-
-		// if the quantity requested is feasible to be ordered.
-		if int(update_data.Data[index].Quantity) <= quantity_from_store {
-
-			// get the unit price of the product
-			rows, err := db1.Query("SELECT id,name,specs,sku,category,price,productid from product where productid=?", update_data.Data[index].ProductId)
-
-			if err != nil {
-				logging.ErrorLogger.Println(err)
-				w.Header().Set("Content-Type", "application/json")
-				w.Header().Set("Access-Control-Allow-Origin", "*")
-				w.WriteHeader(500)
-			}
-
-			for rows.Next() {
-				err = rows.Scan(&product_arr.Id, &product_arr.Name, &product_arr.Specs, &product_arr.Sku, &product_arr.Category, &product_arr.Price, &product_arr.Productid)
-				if err != nil {
-					logging.ErrorLogger.Println(err)
-					w.Header().Set("Content-Type", "application/json")
-					w.Header().Set("Access-Control-Allow-Origin", "*")
-					w.WriteHeader(500)
-				} else {
-					unit_price_of_product = product_arr.Price
-				}
-			}
-
-			total_price := unit_price_of_product * float32(update_data.Data[index].Quantity)
-			fmt.Printf("total price: %v", total_price)
-			fmt.Printf("Quantity from store inside loop :%v", quantity_from_store)
-			fmt.Printf("Quantity from request inside loop :%v", update_data.Data[index].Quantity)
-			net_quantity_remain := quantity_from_store - update_data.Data[index].Quantity
-			fmt.Printf("Net quantity: %v", int(net_quantity_remain))
-
-			// update query to change quantity based on the product and cart id.
-			_, err = db1.Query("Update cart set quantity=? where productid=? and cartid=?", update_data.Data[index].Quantity, update_data.Data[index].ProductId, update_data.CartId)
-
-			if err != nil {
-				logging.ErrorLogger.Println(err)
-				w.Header().Set("Content-Type", "application/json")
-				w.Header().Set("Access-Control-Allow-Origin", "*")
-				w.WriteHeader(500)
-			}
-
-			// update the cart with the updated price.
-			_, err = db1.Query("Update cart set price=? where productid=? and cartid=?", total_price, update_data.Data[index].ProductId, update_data.CartId)
-
-			if err != nil {
-				logging.ErrorLogger.Println(err)
-				w.Header().Set("Content-Type", "application/json")
-				w.Header().Set("Access-Control-Allow-Origin", "*")
-				w.WriteHeader(500)
-			}
-
-			// return the total price for all items belonging to that cart.
-			total_price_returned, err := db1.Query("SELECT sum(price) from cart where cartid=?", update_data.CartId)
-
-			if err != nil {
-				logging.ErrorLogger.Println(err)
-				w.Header().Set("Content-Type", "application/json")
-				w.Header().Set("Access-Control-Allow-Origin", "*")
-				w.WriteHeader(500)
-			}
-
-			for total_price_returned.Next() {
-				err = total_price_returned.Scan(&total_price_details)
-				if err != nil {
-					logging.ErrorLogger.Println(err)
-					w.Header().Set("Content-Type", "application/json")
-					w.Header().Set("Access-Control-Allow-Origin", "*")
-					w.WriteHeader(500)
-				} else {
-					fmt.Printf("Total price %v", total_price_details)
-				}
-			}
-			_, err = db1.Query("UPDATE inventory SET quantity=? where productid=?", net_quantity_remain, update_data.Data[index].ProductId)
-
-			if err != nil {
-				logging.ErrorLogger.Println(err)
-				w.Header().Set("Content-Type", "application/json")
-				w.Header().Set("Access-Control-Allow-Origin", "*")
-				w.WriteHeader(500)
-			}
-
-			rows, err = db1.Query("SELECT id,product,quantity,productid from inventory where productid=?", update_data.Data[index].ProductId)
-
-			if err != nil {
-				log.Print(err)
-			}
-
-			for rows.Next() {
-				err = rows.Scan(&product.Id, &product.Product, &product.Quantity, &product.Productid)
-				if err != nil {
-					logging.ErrorLogger.Println(err)
-					w.Header().Set("Content-Type", "application/json")
-					w.Header().Set("Access-Control-Allow-Origin", "*")
-					w.WriteHeader(500)
-					return
-				} else {
-					product.Quantity = update_data.Data[index].Quantity
-					FinalOrderList = append(FinalOrderList, product)
-				}
-			}
-
-		} else {
-			less_quantity_inventory += "  The product with ID: " + update_data.Data[index].ProductId + " is less in number in the invenotry. Cannot place this item. "
-			not_placed_order += 1
-		}
-
 	}
 
 	response.Status = 200
@@ -590,10 +727,16 @@ func UpdateCart(w http.ResponseWriter, r *http.Request) {
 	} else {
 		response.Data = FinalOrderList
 	}
+	if not_found_order != 0 {
+		response.NotfoundResponse = not_found_inventory
+	} else {
+		response.NotfoundResponse = "N/A"
+	}
 	if len(less_quantity_inventory) != 0 {
 		response.ShortageResponse = less_quantity_inventory
 	} else {
-		response.ShortageResponse = "No shortage in the products placed for cart ID: " + update_data.CartId
+		response.ShortageResponse = "N/A"
+		//"No shortage in the products placed for cart ID: " + cart_id
 	}
 	response.CartID = update_data.CartId
 	response.Price = total_price_details
@@ -610,6 +753,7 @@ func DeleteProduct(w http.ResponseWriter, r *http.Request) {
 	product_id := r.URL.Query().Get("productid")
 	logging.InfoLogger.Println("Product ID", product_id)
 	var response model.GeneralResponse
+	var product_id_exists int
 	db := config.Connect()
 	defer db.Close()
 
@@ -623,46 +767,72 @@ func DeleteProduct(w http.ResponseWriter, r *http.Request) {
 		return
 
 	}
+	rows, err := db.Query("SELECT COUNT(*) from product where productid=?", product_id)
+	if err != nil {
+		logging.ErrorLogger.Println(err)
+		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.WriteHeader(500)
+	}
+	for rows.Next() {
+		err = rows.Scan(&product_id_exists)
+		if err != nil {
+			logging.ErrorLogger.Println(err)
+			w.Header().Set("Content-Type", "application/json")
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.WriteHeader(500)
+		}
+	}
 
 	// Delete item details from product table
-	logging.InfoLogger.Println("Delete query to product table")
-	_, err := db.Query("Delete from  product where productid=?", product_id)
+	if product_id_exists != 0 {
+		logging.InfoLogger.Println("Delete query to product table")
+		_, err = db.Query("Delete from  product where productid=?", product_id)
 
-	if err != nil {
-		logging.ErrorLogger.Println(err)
+		if err != nil {
+			logging.ErrorLogger.Println(err)
+			w.Header().Set("Content-Type", "application/json")
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.WriteHeader(500)
+			return
+		}
+
+		// inserts item details into category table
+		logging.InfoLogger.Println("Delete query to category table")
+		_, err = db.Exec("Delete from category where productid=?", product_id)
+
+		if err != nil {
+			logging.ErrorLogger.Println(err)
+			w.Header().Set("Content-Type", "application/json")
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.WriteHeader(500)
+			return
+		}
+
+		// inserts item details into inventory table
+		logging.InfoLogger.Println("Delete query to inventory table")
+		_, err = db.Exec("Delete from inventory where productid=?", product_id)
+
+		if err != nil {
+
+			return
+		}
+		response.Status = 200
+		response.Message = "Deleted data successfully"
+		logging.InfoLogger.Println("Deleted record succesfully")
+		w.WriteHeader(200)
 		w.Header().Set("Content-Type", "application/json")
 		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.WriteHeader(500)
-		return
-	}
+		json.NewEncoder(w).Encode(response)
+	} else {
 
-	// inserts item details into category table
-	logging.InfoLogger.Println("Delete query to category table")
-	_, err = db.Exec("Delete from category where productid=?", product_id)
-
-	if err != nil {
-		logging.ErrorLogger.Println(err)
+		response.Status = 400
+		response.Message = "Record Not Found"
+		w.WriteHeader(400)
 		w.Header().Set("Content-Type", "application/json")
 		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.WriteHeader(500)
-		return
+		json.NewEncoder(w).Encode(response)
 	}
-
-	// inserts item details into inventory table
-	logging.InfoLogger.Println("Delete query to inventory table")
-	_, err = db.Exec("Delete from inventory where productid=?", product_id)
-
-	if err != nil {
-
-		return
-	}
-	response.Status = 200
-	response.Message = "Deleted data successfully"
-	logging.InfoLogger.Println("Deleted record succesfully")
-
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	json.NewEncoder(w).Encode(response)
 }
 
 // Update Details of a product
@@ -673,6 +843,7 @@ func UpdateProductDetails(w http.ResponseWriter, r *http.Request) {
 	var update_data model.UpdateProduct
 	reqBody, _ := ioutil.ReadAll(r.Body)
 	product_id := r.URL.Query().Get("productid")
+	var product_id_exists int
 	logging.InfoLogger.Println("Product ID", product_id)
 	db := config.Connect()
 	defer db.Close()
@@ -689,19 +860,44 @@ func UpdateProductDetails(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	logging.InfoLogger.Println("Update Query to Product table")
-	_, err := db.Query("UPDATE product SET specs=?, price=? where productid=?", update_data.Specs, update_data.Price, product_id)
+	rows, err := db.Query("SELECT COUNT(*) from product where productid=?", product_id)
 	if err != nil {
-		log.Fatal(err)
+		logging.ErrorLogger.Println(err)
+		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.WriteHeader(500)
 	}
-	defer db.Close()
+	for rows.Next() {
+		err = rows.Scan(&product_id_exists)
+		if err != nil {
+			logging.ErrorLogger.Println(err)
+			w.Header().Set("Content-Type", "application/json")
+			w.Header().Set("Access-Control-Allow-Origin", "*")
+			w.WriteHeader(500)
+		}
+	}
 
-	response.Status = 200
-	response.Message = "Updated Succesfully"
+	if product_id_exists != 0 {
+		logging.InfoLogger.Println("Update Query to Product table")
+		_, err = db.Query("UPDATE product SET specs=?, price=? where productid=?", update_data.Specs, update_data.Price, product_id)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer db.Close()
 
-	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	logging.InfoLogger.Println("Updated Successfully")
-	json.NewEncoder(w).Encode(response)
+		response.Status = 200
+		w.WriteHeader(200)
+		response.Message = "Updated Succesfully"
+		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		json.NewEncoder(w).Encode(response)
+	} else {
+		response.Status = 500
+		w.WriteHeader(500)
+		response.Message = "Did not find the Record"
+		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		json.NewEncoder(w).Encode(response)
+	}
 
 }

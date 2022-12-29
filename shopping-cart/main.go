@@ -95,7 +95,7 @@ func main() {
 			if system_console_option == "3" {
 				var name_product string
 				var quantity int
-				var arr_obj model.InventoryAdditionalResponse
+				var arr_obj model.InventoryAdditionalResponse2
 				var productdetailsreq model.ShopDetailsReq
 				var arr_product []model.ShopDetailsReq
 
@@ -121,12 +121,13 @@ func main() {
 				fmt.Printf("Cart ID:  %v\n", arr_obj.CartID)
 				fmt.Printf("Cart Details: \n %v\n", arr_obj.Data)
 				fmt.Printf("Shortage status: %v\n", arr_obj.ShortageResponse)
+				fmt.Printf("Not Found status: %v\n", arr_obj.NotfoundResponse)
 
 			}
 			if system_console_option == "4" {
 				var name_product string
 				var quantity int
-				var arr_obj model.InventoryAdditionalResponse
+				var arr_obj model.InventoryAdditionalResponse2
 				var productdetailsreq model.ShopDetailsReq
 				var arr_product []model.ShopDetailsReq
 
@@ -144,6 +145,7 @@ func main() {
 				fmt.Printf("Cart ID:  %v\n", arr_obj.CartID)
 				fmt.Printf("Cart Details: \n %v\n", arr_obj.Data)
 				fmt.Printf("Shortage status: %v\n", arr_obj.ShortageResponse)
+				fmt.Printf("Not Found status: %v\n", arr_obj.NotfoundResponse)
 
 			}
 			if system_console_option == "5" {
@@ -196,7 +198,7 @@ func main() {
 			if system_console_option == "6" {
 				var cart_id string
 				var product_id string
-				var arr_obj model.InventoryAdditionalResponse
+				var arr_obj model.InventoryAdditionalResponse2
 				var update_cart_arr model.UpdateCartBody
 				var product_id_input model.UpdateCartBodyConsole
 				fmt.Println("Enter the Cart ID")
@@ -223,14 +225,16 @@ func main() {
 				fmt.Printf("Cart ID:  %v\n", arr_obj.CartID)
 				fmt.Printf("Cart Details: \n %v\n", arr_obj.Data)
 				fmt.Printf("Shortage status: %v\n", arr_obj.ShortageResponse)
+				fmt.Printf("Not Found status: %v\n", arr_obj.NotfoundResponse)
 
 			}
 			if system_console_option == "7" {
 				var product_id string
-
+				var output string
 				fmt.Println("Enter productid:")
 				fmt.Scanln(&product_id)
-				console_intface_controller.DeleteProduct(product_id)
+				output = console_intface_controller.DeleteProduct(product_id)
+				fmt.Println(output)
 			}
 
 			if system_console_option == "8" {
@@ -243,6 +247,7 @@ func main() {
 				var description string
 				var final_specs string
 				var opt string
+				var output string
 				var specs_details_map = make(map[string]interface{})
 				fmt.Println("Enter the product id")
 				fmt.Scanln(&productid)
@@ -271,7 +276,8 @@ func main() {
 				shop_details.Specs = json.RawMessage(final_specs)
 				fmt.Println("Enter price:")
 				fmt.Scanln(&price)
-				console_intface_controller.UpdateProduct(final_specs, price, productid)
+				output = console_intface_controller.UpdateProduct(final_specs, price, productid)
+				fmt.Println(output)
 			}
 
 			if system_console_option == "9" {

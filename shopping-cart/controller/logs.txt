@@ -1,0 +1,98 @@
+INFO: 2022/12/29 18:23:33 controller.go:27: Inside GetPrdoucts Function
+INFO: 2022/12/29 18:23:33 controller.go:79: {200 Success [{HP-laptop {"memory":"7GB","manufacture":"India","Color":"Black"} laptop-123456} {Asus-laptop {Space:8GB} laptop-56789} {Motorola-X3-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-45342123} {LG-X2-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-98342132} {LG-X4-Phone {Space:16GB,Manufacture:Finland} Phone-98342323132} {Motorola-Phone {Space:8GB,Manufacture:India,Warranty:2years} Phone-0909871} {Samsung-S8-Phone {Manufacture:India,Space:8GB} Phone-787867} {LG-X9-Phone {"memory":"8GB","manufacture":"India","Color":"Blue"} Phone-9835542132}]}
+INFO: 2022/12/29 18:23:33 controller.go:161: Inside Get Particular Product function
+INFO: 2022/12/29 18:23:33 controller.go:167: ID from request:16
+INFO: 2022/12/29 18:23:33 controller.go:183: Made a database query to product table
+INFO: 2022/12/29 18:23:33 controller.go:211: Response: {200 Success []}
+INFO: 2022/12/29 18:23:33 controller.go:219: Inside Add item/s to cart function
+INFO: 2022/12/29 18:23:33 controller.go:236: Request Body: {[{2 Nokia-Phone}]}
+INFO: 2022/12/29 18:23:33 controller.go:241: Cart ID: 1672318413952
+INFO: 2022/12/29 18:23:33 controller.go:261: Made a query to product table
+INFO: 2022/12/29 18:23:33 controller.go:285: Query made to invenotry table
+INFO: 2022/12/29 18:23:33 controller.go:305: Quantiy from request:2
+INFO: 2022/12/29 18:27:02 controller.go:27: Inside GetPrdoucts Function
+INFO: 2022/12/29 18:27:02 controller.go:79: {200 Success [{HP-laptop {"memory":"7GB","manufacture":"India","Color":"Black"} laptop-123456} {Asus-laptop {Space:8GB} laptop-56789} {Motorola-X3-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-45342123} {LG-X2-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-98342132} {LG-X4-Phone {Space:16GB,Manufacture:Finland} Phone-98342323132} {Motorola-Phone {Space:8GB,Manufacture:India,Warranty:2years} Phone-0909871} {Samsung-S8-Phone {Manufacture:India,Space:8GB} Phone-787867} {LG-X9-Phone {"memory":"8GB","manufacture":"India","Color":"Blue"} Phone-9835542132}]}
+INFO: 2022/12/29 18:27:02 controller.go:161: Inside Get Particular Product function
+INFO: 2022/12/29 18:27:02 controller.go:167: ID from request:16
+INFO: 2022/12/29 18:27:02 controller.go:183: Made a database query to product table
+INFO: 2022/12/29 18:27:02 controller.go:211: Response: {200 Success []}
+INFO: 2022/12/29 18:27:02 controller.go:219: Inside Add item/s to cart function
+INFO: 2022/12/29 18:27:02 controller.go:236: Request Body: {[{2 Nokia-Phone}]}
+INFO: 2022/12/29 18:27:02 controller.go:241: Cart ID: 1672318622880
+INFO: 2022/12/29 18:27:02 controller.go:261: Made a query to product table
+INFO: 2022/12/29 18:27:02 controller.go:286: Query made to invenotry table
+INFO: 2022/12/29 18:27:02 controller.go:306: Quantiy from request:2
+INFO: 2022/12/29 18:28:43 controller.go:27: Inside GetPrdoucts Function
+INFO: 2022/12/29 18:28:43 controller.go:79: {200 Success [{HP-laptop {"memory":"7GB","manufacture":"India","Color":"Black"} laptop-123456} {Asus-laptop {Space:8GB} laptop-56789} {Motorola-X3-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-45342123} {LG-X2-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-98342132} {LG-X4-Phone {Space:16GB,Manufacture:Finland} Phone-98342323132} {Motorola-Phone {Space:8GB,Manufacture:India,Warranty:2years} Phone-0909871} {Samsung-S8-Phone {Manufacture:India,Space:8GB} Phone-787867} {LG-X9-Phone {"memory":"8GB","manufacture":"India","Color":"Blue"} Phone-9835542132}]}
+INFO: 2022/12/29 18:28:43 controller.go:161: Inside Get Particular Product function
+INFO: 2022/12/29 18:28:43 controller.go:167: ID from request:16
+INFO: 2022/12/29 18:28:43 controller.go:183: Made a database query to product table
+INFO: 2022/12/29 18:28:43 controller.go:211: Response: {200 Success []}
+INFO: 2022/12/29 18:28:43 controller.go:219: Inside Add item/s to cart function
+INFO: 2022/12/29 18:28:43 controller.go:236: Request Body: {[{2 Motorola-Phone}]}
+INFO: 2022/12/29 18:28:43 controller.go:241: Cart ID: 1672318723947
+INFO: 2022/12/29 18:28:43 controller.go:261: Made a query to product table
+INFO: 2022/12/29 18:28:43 controller.go:283: Unit Price of the Product: 45342
+INFO: 2022/12/29 18:28:43 controller.go:286: Query made to invenotry table
+INFO: 2022/12/29 18:28:43 controller.go:306: Quantiy from request:2
+INFO: 2022/12/29 18:28:43 controller.go:322: Quantity requested is less than the inventory quantity
+INFO: 2022/12/29 18:28:43 controller.go:324: total price: 90684
+INFO: 2022/12/29 18:28:43 controller.go:325: Quantity from store inside loop :27
+INFO: 2022/12/29 18:28:43 controller.go:326: Quantity from request inside loop :2
+INFO: 2022/12/29 18:28:43 controller.go:328: Net quantity: 25
+INFO: 2022/12/29 18:28:43 controller.go:610: Inside delete item details
+INFO: 2022/12/29 18:28:43 controller.go:612: Product ID laptop-23456
+INFO: 2022/12/29 18:28:43 controller.go:629: Delete query to product table
+INFO: 2022/12/29 18:28:43 controller.go:641: Delete query to category table
+INFO: 2022/12/29 18:28:43 controller.go:653: Delete query to inventory table
+INFO: 2022/12/29 18:28:43 controller.go:662: Deleted record succesfully
+INFO: 2022/12/29 18:28:43 controller.go:672: Inside update item details
+INFO: 2022/12/29 18:28:43 controller.go:677: Product ID laptop-123456
+INFO: 2022/12/29 18:28:43 controller.go:693: Update Query to Product table
+INFO: 2022/12/29 18:28:43 controller.go:705: Updated Successfully
+INFO: 2022/12/29 18:28:43 controller.go:89: Inside Insert Product Function
+INFO: 2022/12/29 18:28:43 controller.go:96: Request Body:  {0 Samsung-note-Phone SAMNOT-PHN-15-BLK [123 34 109 101 109 111 114 121 34 58 34 56 71 66 34 44 34 109 97 110 117 102 97 99 116 117 114 101 34 58 34 73 110 100 105 97 34 44 34 67 111 108 111 114 34 58 34 66 108 97 99 107 34 125] Phone 36500 Phone-345990521 0}
+INFO: 2022/12/29 18:28:43 controller.go:111: Made query to product table
+INFO: 2022/12/29 18:28:43 controller.go:124: Made query to category table
+INFO: 2022/12/29 18:28:43 controller.go:137: Made query to inventory table
+INFO: 2022/12/29 18:28:43 controller.go:151: Details inserted to the database {200 Insert data successfully}
+INFO: 2022/12/30 03:10:35 controller.go:27: Inside GetPrdoucts Function
+INFO: 2022/12/30 03:10:35 controller.go:79: {200 Success [{HP-laptop {"memory":"7GB","manufacture":"India","Color":"Black"} laptop-123456} {Asus-laptop {Space:8GB} laptop-56789} {LG-X4-Phone {Space:16GB,Manufacture:Finland} Phone-98342323132} {Samsung-S8-Phone {Manufacture:India,Space:8GB} Phone-787867} {LG-X9-Phone {"memory":"8GB","manufacture":"India","Color":"Blue"} Phone-9835542132} {Samsung-note-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-345990521} {LG-X10-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-9830095542} {Lenovo-yoga-laptop {Manufacture:India,Space:8GB} Laptop-090974} {Apple-X2-Phone {size: 13-inch} Phone-112302} {Apple-X7-Phone {size: 13-inch} Phone-1199302}]}
+INFO: 2022/12/30 03:10:35 controller.go:193: Inside Get Particular Product function
+INFO: 2022/12/30 03:10:35 controller.go:199: ID from request:16
+INFO: 2022/12/30 03:10:35 controller.go:215: Made a database query to product table
+INFO: 2022/12/30 03:10:35 controller.go:243: Response: {200 Success []}
+INFO: 2022/12/30 03:10:35 controller.go:251: Inside Add item/s to cart function
+INFO: 2022/12/30 03:10:35 controller.go:273: Request Body: {[{2 Gionee-X12-Phone}]}
+INFO: 2022/12/30 03:10:35 controller.go:278: Cart ID: 1672350035359
+INFO: 2022/12/30 03:10:35 controller.go:752: Inside delete item details
+INFO: 2022/12/30 03:10:35 controller.go:754: Product ID laptop-23456
+INFO: 2022/12/30 03:10:35 controller.go:841: Inside update item details
+INFO: 2022/12/30 03:10:35 controller.go:847: Product ID laptop-56789
+INFO: 2022/12/30 03:10:35 controller.go:881: Update Query to Product table
+INFO: 2022/12/30 03:10:35 controller.go:89: Inside Insert Product Function
+INFO: 2022/12/30 03:10:35 controller.go:96: Request Body:  {0 Samsung-S22-Ultra-Phone SAMULT-PHN-15-BLK [123 34 109 101 109 111 114 121 34 58 34 56 71 66 34 44 34 109 97 110 117 102 97 99 116 117 114 101 34 58 34 73 110 100 105 97 34 44 34 67 111 108 111 114 34 58 34 66 108 97 99 107 34 125] Phone 36500 Phone-3459565490 0}
+INFO: 2022/12/30 03:10:35 controller.go:143: Made query to product table
+INFO: 2022/12/30 03:10:35 controller.go:156: Made query to category table
+INFO: 2022/12/30 03:10:35 controller.go:169: Made query to inventory table
+INFO: 2022/12/30 03:10:35 controller.go:183: Details inserted to the database {200 Insert data successfully}
+INFO: 2022/12/30 03:14:13 controller.go:27: Inside GetPrdoucts Function
+INFO: 2022/12/30 03:14:13 controller.go:79: {200 Success [{HP-laptop {"memory":"7GB","manufacture":"India","Color":"Black"} laptop-123456} {Asus-laptop {"memory":"7GB","manufacture":"India","Color":"Black"} laptop-56789} {LG-X4-Phone {Space:16GB,Manufacture:Finland} Phone-98342323132} {Samsung-S8-Phone {Manufacture:India,Space:8GB} Phone-787867} {LG-X9-Phone {"memory":"8GB","manufacture":"India","Color":"Blue"} Phone-9835542132} {Samsung-note-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-345990521} {LG-X10-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-9830095542} {Lenovo-yoga-laptop {Manufacture:India,Space:8GB} Laptop-090974} {Apple-X2-Phone {size: 13-inch} Phone-112302} {Apple-X7-Phone {size: 13-inch} Phone-1199302} {Samsung-S22-Ultra-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-3459565490}]}
+INFO: 2022/12/30 03:14:13 controller.go:193: Inside Get Particular Product function
+INFO: 2022/12/30 03:14:13 controller.go:199: ID from request:16
+INFO: 2022/12/30 03:14:13 controller.go:215: Made a database query to product table
+INFO: 2022/12/30 03:14:13 controller.go:243: Response: {200 Success []}
+INFO: 2022/12/30 03:14:13 controller.go:251: Inside Add item/s to cart function
+INFO: 2022/12/30 03:14:13 controller.go:273: Request Body: {[{2 Gionee-X12-Phone}]}
+INFO: 2022/12/30 03:14:13 controller.go:278: Cart ID: 1672350253967
+INFO: 2022/12/30 03:14:13 controller.go:752: Inside delete item details
+INFO: 2022/12/30 03:14:13 controller.go:754: Product ID laptop-23456
+INFO: 2022/12/30 03:14:13 controller.go:841: Inside update item details
+INFO: 2022/12/30 03:14:13 controller.go:847: Product ID laptop-56789
+INFO: 2022/12/30 03:14:13 controller.go:881: Update Query to Product table
+INFO: 2022/12/30 03:14:13 controller.go:89: Inside Insert Product Function
+INFO: 2022/12/30 03:14:13 controller.go:96: Request Body:  {0 Samsung-S22-Ultra-Phone SAMULT-PHN-15-BLK [123 34 109 101 109 111 114 121 34 58 34 56 71 66 34 44 34 109 97 110 117 102 97 99 116 117 114 101 34 58 34 73 110 100 105 97 34 44 34 67 111 108 111 114 34 58 34 66 108 97 99 107 34 125] Phone 36500 Phone-3459565490 0}
+INFO: 2022/12/30 03:14:13 controller.go:143: Made query to product table
+INFO: 2022/12/30 03:14:13 controller.go:156: Made query to category table
+INFO: 2022/12/30 03:14:13 controller.go:169: Made query to inventory table
+INFO: 2022/12/30 03:14:13 controller.go:183: Details inserted to the database {200 Insert data successfully}
