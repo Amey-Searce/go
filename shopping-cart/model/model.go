@@ -64,6 +64,10 @@ type ProductDetails struct {
 	Message string `json:"message"`
 	Data    []Product
 }
+type GeneralResponse struct {
+	Status  int
+	Message string
+}
 type ProductDetailsConsole struct {
 	Status  int    `json:"status"`
 	Message string `json:"message"`
@@ -91,6 +95,14 @@ type InventoryResponse struct {
 	CartID  string  `json:"cartid"`
 	Data    []Inventory
 }
+type InventoryAdditionalResponse struct {
+	Status           int     `json:"status"`
+	Message          string  `json:"message"`
+	Price            float32 `json:"price"`
+	CartID           string  `json:"cartid"`
+	Data             []Inventory
+	ShortageResponse string
+}
 
 type ShopDetailsReq struct {
 	Quantity int
@@ -117,4 +129,15 @@ type UpdateCartBodyApi struct {
 type UpdateProduct struct {
 	Specs json.RawMessage `json:"specs"`
 	Price float32         `json:"price"`
+}
+
+type InsertProductDetails struct {
+	Id        int             `json:"id"`
+	Name      string          `json:"name"`
+	Sku       string          `json:"sku"`
+	Specs     json.RawMessage `json:"specs"`
+	Category  string          `json:"category"`
+	Price     float32         `json:"price"`
+	Productid string          `json:"productid"`
+	Quantity  int             `json:"quantity"`
 }

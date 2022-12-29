@@ -2,7 +2,6 @@ package controller
 
 import (
 	"bytes"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -14,8 +13,8 @@ func TestGetProducts(T *testing.T) {
 	request, _ := http.NewRequest("GET", "/getproducts?page=1", nil)
 	handler := http.HandlerFunc(GetProducts)
 	response := httptest.NewRecorder()
-	fmt.Printf("Request:%v", request)
-	fmt.Printf("Response: %v", response)
+	// fmt.Printf("Request:%v", request)
+	// fmt.Printf("Response: %v", response)
 	handler.ServeHTTP(response, request)
 	status := response.Code
 	if status == 200 {
@@ -29,8 +28,8 @@ func TestGetProduct(T *testing.T) {
 	request, _ := http.NewRequest("GET", "/getproduct?id=16", nil)
 	handler := http.HandlerFunc(GetProduct)
 	response := httptest.NewRecorder()
-	fmt.Printf("Request:%v", request)
-	fmt.Printf("Response: %v", response)
+	// fmt.Printf("Request:%v", request)
+	// fmt.Printf("Response: %v", response)
 	handler.ServeHTTP(response, request)
 	status := response.Code
 	if status == 200 {
@@ -54,8 +53,8 @@ func TestAddItemsCart(T *testing.T) {
 	request, _ := http.NewRequest("POST", "/additemstocart", bytes.NewBuffer(json))
 	handler := http.HandlerFunc(AddItemtoCart)
 	response := httptest.NewRecorder()
-	fmt.Printf("Request:%v", request)
-	fmt.Printf("Response: %v", response)
+	// fmt.Printf("Request:%v", request)
+	// fmt.Printf("Response: %v", response)
 	handler.ServeHTTP(response, request)
 	status := response.Code
 	if status == 200 {
@@ -70,8 +69,8 @@ func TestDeleteProduct(T *testing.T) {
 	request, _ := http.NewRequest("DELETE", "/deleteitem?productid=laptop-23456", nil)
 	handler := http.HandlerFunc(DeleteProduct)
 	response := httptest.NewRecorder()
-	fmt.Printf("Request:%v", request)
-	fmt.Printf("Response: %v", response)
+	// fmt.Printf("Request:%v", request)
+	// fmt.Printf("Response: %v", response)
 	handler.ServeHTTP(response, request)
 	status := response.Code
 	if status == 200 {
@@ -90,8 +89,8 @@ func TestUpdateProductDetails(T *testing.T) {
 	request, _ := http.NewRequest("PUT", "/updateproduct?productid=laptop-123456", bytes.NewBuffer(json))
 	handler := http.HandlerFunc(UpdateProductDetails)
 	response := httptest.NewRecorder()
-	fmt.Printf("Request:%v", request)
-	fmt.Printf("Response: %v", response)
+	// fmt.Printf("Request:%v", request)
+	// fmt.Printf("Response: %v", response)
 	handler.ServeHTTP(response, request)
 	status := response.Code
 	if status == 200 {
@@ -114,8 +113,8 @@ func TestInsertProduct(T *testing.T) {
 	request, _ := http.NewRequest("POST", "/insertproduct", bytes.NewBuffer(json))
 	handler := http.HandlerFunc(InsertProduct)
 	response := httptest.NewRecorder()
-	fmt.Printf("Request:%v", request)
-	fmt.Printf("Response: %v", response)
+	// fmt.Printf("Request:%v", request)
+	// fmt.Printf("Response: %v", response)
 	handler.ServeHTTP(response, request)
 	status := response.Code
 	if status == 200 {

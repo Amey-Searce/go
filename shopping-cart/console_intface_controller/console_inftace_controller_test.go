@@ -8,7 +8,7 @@ import (
 )
 
 func TestGetProducts(T *testing.T) {
-	result := GetProducts(1)
+	result := GetProducts("1")
 	if len(result) >= 0 {
 		T.Logf("Success")
 	} else {
@@ -37,7 +37,7 @@ func TestInsertProduct(T *testing.T) {
 	shop_details.Price = 99000
 	shop_details.Specs = json.RawMessage("{size: 13-inch}")
 
-	result := InsertProduct(shop_details)
+	result := InsertProduct(shop_details, 34)
 	print(result)
 	if len(result) >= 0 {
 		T.Logf("Success")
