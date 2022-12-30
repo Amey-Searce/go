@@ -41,4 +41,29 @@ Enter 1 for system console mode.
 Enter 2 to expose the api endpoints on port 1234.
 
 
+
+
+## Services
+
+
+
+
+```
+Get a Particular Product
+
+Get all the products
+
+Insert item 
+
+Add an item to cart 
+
+Add multiple items to cart
+
+Update Cart 
+
+Delete Product 
+
+Update Product
+```
+
   
