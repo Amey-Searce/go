@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"go-crud/config"
 	"go-crud/console_intface_controller"
 	"go-crud/logging"
 	"go-crud/model"
@@ -18,6 +19,24 @@ import (
 func main() {
 	var option string
 	var system_console_option string
+	create_response := config.Create()
+	if create_response == "Success" {
+		fmt.Println("Table Creation Success")
+	} else {
+		fmt.Println(create_response)
+	}
+	insert_response := config.Insert()
+	if insert_response == "Success" {
+		fmt.Println("Insertion Success")
+	} else {
+		fmt.Println("Insert Failure")
+	}
+	alter_response := config.Alter()
+	if alter_response == "Success" {
+		fmt.Println("Alter  Success")
+	} else {
+		fmt.Println(alter_response)
+	}
 	fmt.Println("Enter 1 to use System Console. Enter 2 to expose the api endpoints")
 	fmt.Scanln(&option)
 
@@ -100,12 +119,12 @@ func main() {
 				var arr_product []model.ShopDetailsReq
 
 				for {
-					fmt.Println("Enter the Product Name")
+					fmt.Println("Enter the Product ID")
 					fmt.Scanln(&name_product)
 					fmt.Println("Enter the quantity")
 					fmt.Scanln(&quantity)
 
-					productdetailsreq.Name = name_product
+					productdetailsreq.ProductId = name_product
 					productdetailsreq.Quantity = quantity
 					arr_product = append(arr_product, productdetailsreq)
 
@@ -136,7 +155,7 @@ func main() {
 				fmt.Println("Enter the quantity")
 				fmt.Scanln(&quantity)
 
-				productdetailsreq.Name = name_product
+				productdetailsreq.ProductId = name_product
 				productdetailsreq.Quantity = quantity
 				arr_product = append(arr_product, productdetailsreq)
 
@@ -189,8 +208,6 @@ func main() {
 				fmt.Scanln(&shop_details.Category)
 				fmt.Println("Enter the price of the product")
 				fmt.Scanln(&shop_details.Price)
-				fmt.Println("Enter the productid")
-				fmt.Scanln(&shop_details.Productid)
 				fmt.Println("Enter the quantity")
 				fmt.Scanln(&quantity)
 				console_intface_controller.InsertProduct(shop_details, quantity)

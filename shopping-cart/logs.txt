@@ -738,3 +738,370 @@ INFO: 2022/12/30 03:31:56 controller.go:841: Inside update item details
 INFO: 2022/12/30 03:31:56 controller.go:847: Product ID Phone-9835542132
 INFO: 2022/12/30 03:31:56 controller.go:881: Update Query to Product table
 INFO: 2022/12/30 03:32:42 console_inftace_controller.go:24: Inside GetPrdoucts Function
+INFO: 2022/12/30 09:23:20 main.go:26: The application is starting
+INFO: 2022/12/30 09:28:11 controller.go:193: Inside Get Particular Product function
+INFO: 2022/12/30 09:28:11 controller.go:199: ID from request:36
+INFO: 2022/12/30 09:28:11 controller.go:215: Made a database query to product table
+INFO: 2022/12/30 09:28:11 controller.go:232: Details retrieved from database: 36 Apple-X7-Phone {size: 13-inch} APPLX7-PHN-13-BLK Phone 99000 Phone-1199302
+INFO: 2022/12/30 09:28:11 controller.go:243: Response: {200 Success [{36 Apple-X7-Phone APPLX7-PHN-13-BLK {size: 13-inch} Phone 99000 Phone-1199302}]}
+INFO: 2022/12/30 09:28:21 controller.go:27: Inside GetPrdoucts Function
+INFO: 2022/12/30 09:28:21 controller.go:79: {200 Success [{HP-laptop {"memory":"7GB","manufacture":"India","Color":"Black"} laptop-123456} {Asus-laptop {"memory":"7GB","manufacture":"India","Color":"Black"} laptop-56789} {LG-X4-Phone {Space:16GB,Manufacture:Finland} Phone-98342323132} {Samsung-S8-Phone {Manufacture:India,Space:8GB} Phone-787867} {LG-X9-Phone {Manufacture:India,Space:8GB} Phone-9835542132} {Samsung-note-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-345990521} {LG-X10-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-9830095542} {Lenovo-yoga-laptop {Manufacture:India,Space:8GB} Laptop-090974} {Apple-X2-Phone {size: 13-inch} Phone-112302} {Apple-X7-Phone {size: 13-inch} Phone-1199302} {Samsung-S22-Ultra-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-3459565490} {LG-X11-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-98300932542}]}
+INFO: 2022/12/30 09:29:34 controller.go:89: Inside Insert Product Function
+INFO: 2022/12/30 09:29:34 controller.go:96: Request Body:  {0 LG-X23-Phone LGX23-PHN-13-BLK [123 34 109 101 109 111 114 121 34 58 34 56 71 66 34 44 34 109 97 110 117 102 97 99 116 117 114 101 34 58 34 73 110 100 105 97 34 44 34 67 111 108 111 114 34 58 34 66 108 97 99 107 34 125] Phone 36500 Phone-9830321542 90}
+INFO: 2022/12/30 09:29:34 controller.go:143: Made query to product table
+INFO: 2022/12/30 09:29:34 controller.go:156: Made query to category table
+INFO: 2022/12/30 09:29:34 controller.go:169: Made query to inventory table
+INFO: 2022/12/30 09:29:34 controller.go:183: Details inserted to the database {200 Insert data successfully}
+INFO: 2022/12/30 09:32:22 controller.go:251: Inside Add item/s to cart function
+INFO: 2022/12/30 09:32:22 controller.go:273: Request Body: {[{2 LG-X11-Phone} {2 LG-X23-Phone}]}
+INFO: 2022/12/30 09:32:22 controller.go:278: Cart ID: 1672372942011
+INFO: 2022/12/30 09:32:22 controller.go:330: Made a query to product table
+INFO: 2022/12/30 09:32:22 controller.go:354: Unit Price of the Product: 36500
+INFO: 2022/12/30 09:32:22 controller.go:358: Query made to invenotry table
+INFO: 2022/12/30 09:32:22 controller.go:378: Quantiy from request:2
+INFO: 2022/12/30 09:32:22 controller.go:395: Quantity requested is less than the inventory quantity
+INFO: 2022/12/30 09:32:22 controller.go:397: total price: 73000
+INFO: 2022/12/30 09:32:22 controller.go:398: Quantity from store inside loop :60
+INFO: 2022/12/30 09:32:22 controller.go:399: Quantity from request inside loop :2
+INFO: 2022/12/30 09:32:22 controller.go:401: Net quantity: 58
+INFO: 2022/12/30 09:32:22 controller.go:330: Made a query to product table
+INFO: 2022/12/30 09:32:22 controller.go:354: Unit Price of the Product: 36500
+INFO: 2022/12/30 09:32:22 controller.go:358: Query made to invenotry table
+INFO: 2022/12/30 09:32:22 controller.go:378: Quantiy from request:2
+INFO: 2022/12/30 09:32:22 controller.go:395: Quantity requested is less than the inventory quantity
+INFO: 2022/12/30 09:32:22 controller.go:397: total price: 73000
+INFO: 2022/12/30 09:32:22 controller.go:398: Quantity from store inside loop :90
+INFO: 2022/12/30 09:32:22 controller.go:399: Quantity from request inside loop :2
+INFO: 2022/12/30 09:32:22 controller.go:401: Net quantity: 88
+INFO: 2022/12/30 09:33:36 controller.go:251: Inside Add item/s to cart function
+INFO: 2022/12/30 09:33:36 controller.go:273: Request Body: {[{2 Asus-Laptop} {2 LG-X9-Phone}]}
+INFO: 2022/12/30 09:33:36 controller.go:278: Cart ID: 1672373016684
+INFO: 2022/12/30 09:33:36 controller.go:330: Made a query to product table
+INFO: 2022/12/30 09:33:36 controller.go:354: Unit Price of the Product: 36400
+INFO: 2022/12/30 09:33:36 controller.go:358: Query made to invenotry table
+INFO: 2022/12/30 09:33:36 controller.go:378: Quantiy from request:2
+INFO: 2022/12/30 09:33:36 controller.go:330: Made a query to product table
+INFO: 2022/12/30 09:33:36 controller.go:354: Unit Price of the Product: 45345
+INFO: 2022/12/30 09:33:36 controller.go:358: Query made to invenotry table
+INFO: 2022/12/30 09:33:36 controller.go:378: Quantiy from request:2
+INFO: 2022/12/30 09:33:36 controller.go:395: Quantity requested is less than the inventory quantity
+INFO: 2022/12/30 09:33:36 controller.go:397: total price: 90690
+INFO: 2022/12/30 09:33:36 controller.go:398: Quantity from store inside loop :9
+INFO: 2022/12/30 09:33:36 controller.go:399: Quantity from request inside loop :2
+INFO: 2022/12/30 09:33:36 controller.go:401: Net quantity: 7
+INFO: 2022/12/30 09:35:00 controller.go:251: Inside Add item/s to cart function
+INFO: 2022/12/30 09:35:00 controller.go:273: Request Body: {[{2 Asus-Laptop} {2 Nokia-Phone}]}
+INFO: 2022/12/30 09:35:00 controller.go:278: Cart ID: 1672373100384
+INFO: 2022/12/30 09:35:00 controller.go:330: Made a query to product table
+INFO: 2022/12/30 09:35:00 controller.go:354: Unit Price of the Product: 36400
+INFO: 2022/12/30 09:35:00 controller.go:358: Query made to invenotry table
+INFO: 2022/12/30 09:35:00 controller.go:378: Quantiy from request:2
+INFO: 2022/12/30 09:35:24 controller.go:251: Inside Add item/s to cart function
+INFO: 2022/12/30 09:35:24 controller.go:273: Request Body: {[{2 Asus-Laptop} {2 Nokia-Phone} {2 Zen-Phone}]}
+INFO: 2022/12/30 09:35:24 controller.go:278: Cart ID: 1672373124456
+INFO: 2022/12/30 09:35:24 controller.go:330: Made a query to product table
+INFO: 2022/12/30 09:35:24 controller.go:354: Unit Price of the Product: 36400
+INFO: 2022/12/30 09:35:24 controller.go:358: Query made to invenotry table
+INFO: 2022/12/30 09:35:24 controller.go:378: Quantiy from request:2
+INFO: 2022/12/30 09:35:45 controller.go:251: Inside Add item/s to cart function
+INFO: 2022/12/30 09:35:45 controller.go:273: Request Body: {[{2 Asus-Laptop} {2 Nokia-Phone}]}
+INFO: 2022/12/30 09:35:45 controller.go:278: Cart ID: 1672373145969
+INFO: 2022/12/30 09:35:45 controller.go:330: Made a query to product table
+INFO: 2022/12/30 09:35:45 controller.go:354: Unit Price of the Product: 36400
+INFO: 2022/12/30 09:35:45 controller.go:358: Query made to invenotry table
+INFO: 2022/12/30 09:35:45 controller.go:378: Quantiy from request:2
+INFO: 2022/12/30 09:37:00 controller.go:251: Inside Add item/s to cart function
+INFO: 2022/12/30 09:37:00 controller.go:273: Request Body: {[{2 Apple-X7-Phone}]}
+INFO: 2022/12/30 09:37:00 controller.go:278: Cart ID: 1672373220499
+INFO: 2022/12/30 09:37:00 controller.go:330: Made a query to product table
+INFO: 2022/12/30 09:37:00 controller.go:354: Unit Price of the Product: 99000
+INFO: 2022/12/30 09:37:00 controller.go:358: Query made to invenotry table
+INFO: 2022/12/30 09:37:00 controller.go:378: Quantiy from request:2
+INFO: 2022/12/30 09:37:00 controller.go:395: Quantity requested is less than the inventory quantity
+INFO: 2022/12/30 09:37:00 controller.go:397: total price: 198000
+INFO: 2022/12/30 09:37:00 controller.go:398: Quantity from store inside loop :34
+INFO: 2022/12/30 09:37:00 controller.go:399: Quantity from request inside loop :2
+INFO: 2022/12/30 09:37:00 controller.go:401: Net quantity: 32
+INFO: 2022/12/30 09:44:26 controller.go:841: Inside update item details
+INFO: 2022/12/30 09:44:26 controller.go:847: Product ID Phone-1199302
+INFO: 2022/12/30 09:44:26 controller.go:881: Update Query to Product table
+INFO: 2022/12/30 09:45:13 controller.go:841: Inside update item details
+INFO: 2022/12/30 09:45:13 controller.go:847: Product ID Phone-1199302
+INFO: 2022/12/30 09:45:13 controller.go:881: Update Query to Product table
+INFO: 2022/12/30 10:02:39 controller.go:752: Inside delete item details
+INFO: 2022/12/30 10:02:39 controller.go:754: Product ID Phone-98342132
+INFO: 2022/12/30 10:05:53 console_inftace_controller.go:24: Inside GetPrdoucts Function
+INFO: 2022/12/30 10:10:03 console_inftace_controller.go:24: Inside GetPrdoucts Function
+INFO: 2022/12/30 10:24:42 console_inftace_controller.go:24: Inside GetPrdoucts Function
+INFO: 2022/12/30 10:45:28 main.go:26: The application is starting
+INFO: 2022/12/30 10:45:34 controller.go:193: Inside Get Particular Product function
+INFO: 2022/12/30 10:45:34 controller.go:199: ID from request:36
+INFO: 2022/12/30 10:45:34 controller.go:215: Made a database query to product table
+INFO: 2022/12/30 10:45:34 controller.go:232: Details retrieved from database: 36 Apple-X7-Phone {"memory":"8GB","warranty":"2-years","manufacture":"India","Color":"Blue"} APPLX7-PHN-13-BLK Phone 36900 Phone-1199302
+INFO: 2022/12/30 10:45:34 controller.go:243: Response: {200 Success [{36 Apple-X7-Phone APPLX7-PHN-13-BLK {"memory":"8GB","warranty":"2-years","manufacture":"India","Color":"Blue"} Phone 36900 Phone-1199302}]}
+INFO: 2022/12/30 10:45:52 controller.go:193: Inside Get Particular Product function
+INFO: 2022/12/30 10:45:52 controller.go:199: ID from request:40
+INFO: 2022/12/30 10:45:52 controller.go:215: Made a database query to product table
+INFO: 2022/12/30 10:45:52 controller.go:232: Details retrieved from database: 40 LG-X23-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} LGX23-PHN-13-BLK Phone 36500 Phone-9830321542
+INFO: 2022/12/30 10:45:52 controller.go:243: Response: {200 Success [{40 LG-X23-Phone LGX23-PHN-13-BLK {"memory":"8GB","manufacture":"India","Color":"Black"} Phone 36500 Phone-9830321542}]}
+INFO: 2022/12/30 10:46:03 controller.go:193: Inside Get Particular Product function
+INFO: 2022/12/30 10:46:03 controller.go:199: ID from request:34
+INFO: 2022/12/30 10:46:03 controller.go:215: Made a database query to product table
+INFO: 2022/12/30 10:46:03 controller.go:232: Details retrieved from database: 34 Lenovo-yoga-laptop {Manufacture:India,Space:8GB} LENYOG-LAP-13-PLK Laptop 45678 Laptop-090974
+INFO: 2022/12/30 10:46:03 controller.go:243: Response: {200 Success [{34 Lenovo-yoga-laptop LENYOG-LAP-13-PLK {Manufacture:India,Space:8GB} Laptop 45678 Laptop-090974}]}
+INFO: 2022/12/30 10:46:12 controller.go:193: Inside Get Particular Product function
+INFO: 2022/12/30 10:46:12 controller.go:199: ID from request:40
+INFO: 2022/12/30 10:46:12 controller.go:215: Made a database query to product table
+INFO: 2022/12/30 10:46:12 controller.go:232: Details retrieved from database: 40 LG-X23-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} LGX23-PHN-13-BLK Phone 36500 Phone-9830321542
+INFO: 2022/12/30 10:46:12 controller.go:243: Response: {200 Success [{40 LG-X23-Phone LGX23-PHN-13-BLK {"memory":"8GB","manufacture":"India","Color":"Black"} Phone 36500 Phone-9830321542}]}
+INFO: 2022/12/30 10:46:17 controller.go:27: Inside GetPrdoucts Function
+INFO: 2022/12/30 10:46:17 controller.go:79: {200 Success [{HP-laptop {"memory":"7GB","manufacture":"India","Color":"Black"} laptop-123456} {Asus-laptop {"memory":"7GB","manufacture":"India","Color":"Black"} laptop-56789} {LG-X4-Phone {Space:16GB,Manufacture:Finland} Phone-98342323132} {Samsung-S8-Phone {Manufacture:India,Space:8GB} Phone-787867} {LG-X9-Phone {Manufacture:India,Space:8GB} Phone-9835542132} {Samsung-note-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-345990521} {LG-X10-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-9830095542} {Lenovo-yoga-laptop {Manufacture:India,Space:8GB} Laptop-090974} {Apple-X2-Phone {size: 13-inch} Phone-112302} {Apple-X7-Phone {"memory":"8GB","warranty":"2-years","manufacture":"India","Color":"Blue"} Phone-1199302} {Samsung-S22-Ultra-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-3459565490} {LG-X11-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-98300932542} {LG-X23-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-9830321542} {Gionee-Ultra-Phone {Manufacture:Japan,Memory:8GB,Color:Black} Phone-09097086}]}
+INFO: 2022/12/30 10:46:30 controller.go:27: Inside GetPrdoucts Function
+INFO: 2022/12/30 10:46:30 controller.go:79: {200 Success []}
+INFO: 2022/12/30 10:46:41 controller.go:27: Inside GetPrdoucts Function
+ERROR: 2022/12/30 10:46:41 controller.go:54: Error 1690 (22003): signed integer value is out of range in 'mysqld_stmt_execute'
+INFO: 2022/12/30 10:46:50 controller.go:27: Inside GetPrdoucts Function
+INFO: 2022/12/30 10:46:50 controller.go:79: {200 Success [{HP-laptop {"memory":"7GB","manufacture":"India","Color":"Black"} laptop-123456} {Asus-laptop {"memory":"7GB","manufacture":"India","Color":"Black"} laptop-56789} {LG-X4-Phone {Space:16GB,Manufacture:Finland} Phone-98342323132} {Samsung-S8-Phone {Manufacture:India,Space:8GB} Phone-787867} {LG-X9-Phone {Manufacture:India,Space:8GB} Phone-9835542132} {Samsung-note-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-345990521} {LG-X10-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-9830095542} {Lenovo-yoga-laptop {Manufacture:India,Space:8GB} Laptop-090974} {Apple-X2-Phone {size: 13-inch} Phone-112302} {Apple-X7-Phone {"memory":"8GB","warranty":"2-years","manufacture":"India","Color":"Blue"} Phone-1199302} {Samsung-S22-Ultra-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-3459565490} {LG-X11-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-98300932542} {LG-X23-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-9830321542} {Gionee-Ultra-Phone {Manufacture:Japan,Memory:8GB,Color:Black} Phone-09097086}]}
+INFO: 2022/12/30 10:47:36 controller.go:89: Inside Insert Product Function
+INFO: 2022/12/30 10:47:36 controller.go:96: Request Body:  {0 LG-X29-Phone LGX29-PHN-13-BLK [123 34 109 101 109 111 114 121 34 58 34 56 71 66 34 44 34 109 97 110 117 102 97 99 116 117 114 101 34 58 34 73 110 100 105 97 34 44 34 67 111 108 111 114 34 58 34 66 108 97 99 107 34 125] Phone 36500 Phone-983003212542 90}
+INFO: 2022/12/30 10:47:36 controller.go:143: Made query to product table
+INFO: 2022/12/30 10:47:36 controller.go:156: Made query to category table
+INFO: 2022/12/30 10:47:36 controller.go:169: Made query to inventory table
+INFO: 2022/12/30 10:47:36 controller.go:183: Details inserted to the database {200 Insert data successfully}
+INFO: 2022/12/30 10:48:04 controller.go:251: Inside Add item/s to cart function
+INFO: 2022/12/30 10:48:04 controller.go:273: Request Body: {[{1 LG-X11-Phone} {1 LG-X23-Phone}]}
+INFO: 2022/12/30 10:48:04 controller.go:278: Cart ID: 1672377484556
+INFO: 2022/12/30 10:48:04 controller.go:330: Made a query to product table
+INFO: 2022/12/30 10:48:04 controller.go:354: Unit Price of the Product: 36500
+INFO: 2022/12/30 10:48:04 controller.go:358: Query made to invenotry table
+INFO: 2022/12/30 10:48:04 controller.go:378: Quantiy from request:1
+INFO: 2022/12/30 10:48:04 controller.go:395: Quantity requested is less than the inventory quantity
+INFO: 2022/12/30 10:48:04 controller.go:397: total price: 36500
+INFO: 2022/12/30 10:48:04 controller.go:398: Quantity from store inside loop :56
+INFO: 2022/12/30 10:48:04 controller.go:399: Quantity from request inside loop :1
+INFO: 2022/12/30 10:48:04 controller.go:401: Net quantity: 55
+INFO: 2022/12/30 10:48:04 controller.go:330: Made a query to product table
+INFO: 2022/12/30 10:48:04 controller.go:354: Unit Price of the Product: 36500
+INFO: 2022/12/30 10:48:04 controller.go:358: Query made to invenotry table
+INFO: 2022/12/30 10:48:04 controller.go:378: Quantiy from request:1
+INFO: 2022/12/30 10:48:04 controller.go:395: Quantity requested is less than the inventory quantity
+INFO: 2022/12/30 10:48:04 controller.go:397: total price: 36500
+INFO: 2022/12/30 10:48:04 controller.go:398: Quantity from store inside loop :83
+INFO: 2022/12/30 10:48:04 controller.go:399: Quantity from request inside loop :1
+INFO: 2022/12/30 10:48:04 controller.go:401: Net quantity: 82
+INFO: 2022/12/30 10:48:39 controller.go:251: Inside Add item/s to cart function
+INFO: 2022/12/30 10:48:39 controller.go:273: Request Body: {[{2 Asus-Laptop} {2 LG-X9-Phone}]}
+INFO: 2022/12/30 10:48:39 controller.go:278: Cart ID: 1672377519868
+INFO: 2022/12/30 10:48:39 controller.go:330: Made a query to product table
+INFO: 2022/12/30 10:48:39 controller.go:354: Unit Price of the Product: 36400
+INFO: 2022/12/30 10:48:39 controller.go:358: Query made to invenotry table
+INFO: 2022/12/30 10:48:39 controller.go:378: Quantiy from request:2
+INFO: 2022/12/30 10:48:39 controller.go:330: Made a query to product table
+INFO: 2022/12/30 10:48:39 controller.go:354: Unit Price of the Product: 45345
+INFO: 2022/12/30 10:48:39 controller.go:358: Query made to invenotry table
+INFO: 2022/12/30 10:48:39 controller.go:378: Quantiy from request:2
+INFO: 2022/12/30 10:48:39 controller.go:395: Quantity requested is less than the inventory quantity
+INFO: 2022/12/30 10:48:39 controller.go:397: total price: 90690
+INFO: 2022/12/30 10:48:39 controller.go:398: Quantity from store inside loop :7
+INFO: 2022/12/30 10:48:39 controller.go:399: Quantity from request inside loop :2
+INFO: 2022/12/30 10:48:39 controller.go:401: Net quantity: 5
+INFO: 2022/12/30 10:49:02 controller.go:251: Inside Add item/s to cart function
+INFO: 2022/12/30 10:49:02 controller.go:273: Request Body: {[{2 Asus-Laptop} {2 Nokia-Phone}]}
+INFO: 2022/12/30 10:49:02 controller.go:278: Cart ID: 1672377542172
+INFO: 2022/12/30 10:49:02 controller.go:330: Made a query to product table
+INFO: 2022/12/30 10:49:02 controller.go:354: Unit Price of the Product: 36400
+INFO: 2022/12/30 10:49:02 controller.go:358: Query made to invenotry table
+INFO: 2022/12/30 10:49:02 controller.go:378: Quantiy from request:2
+INFO: 2022/12/30 10:53:00 controller.go:251: Inside Add item/s to cart function
+INFO: 2022/12/30 10:53:00 controller.go:273: Request Body: {[{1 Apple-X7-Phone}]}
+INFO: 2022/12/30 10:53:00 controller.go:278: Cart ID: 1672377780401
+INFO: 2022/12/30 10:53:00 controller.go:330: Made a query to product table
+INFO: 2022/12/30 10:53:00 controller.go:354: Unit Price of the Product: 36900
+INFO: 2022/12/30 10:53:00 controller.go:358: Query made to invenotry table
+INFO: 2022/12/30 10:53:00 controller.go:378: Quantiy from request:1
+INFO: 2022/12/30 10:53:00 controller.go:395: Quantity requested is less than the inventory quantity
+INFO: 2022/12/30 10:53:00 controller.go:397: total price: 36900
+INFO: 2022/12/30 10:53:00 controller.go:398: Quantity from store inside loop :32
+INFO: 2022/12/30 10:53:00 controller.go:399: Quantity from request inside loop :1
+INFO: 2022/12/30 10:53:00 controller.go:401: Net quantity: 31
+INFO: 2022/12/30 11:52:32 console_inftace_controller.go:24: Inside GetPrdoucts Function
+INFO: 2022/12/30 12:04:39 main.go:26: The application is starting
+INFO: 2022/12/30 12:04:58 controller.go:193: Inside Get Particular Product function
+INFO: 2022/12/30 12:04:58 controller.go:199: ID from request:40
+INFO: 2022/12/30 12:04:58 controller.go:215: Made a database query to product table
+INFO: 2022/12/30 12:04:58 controller.go:232: Details retrieved from database: 40 LG-X23-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} LGX23-PHN-13-BLK Phone 36500 Phone-9830321542
+INFO: 2022/12/30 12:04:58 controller.go:243: Response: {200 Success [{40 LG-X23-Phone LGX23-PHN-13-BLK {"memory":"8GB","manufacture":"India","Color":"Black"} Phone 36500 Phone-9830321542}]}
+INFO: 2022/12/30 12:05:45 controller.go:27: Inside GetPrdoucts Function
+INFO: 2022/12/30 12:05:45 controller.go:79: {200 Success [{HP-laptop {"memory":"7GB","manufacture":"India","Color":"Black"} laptop-123456} {Asus-laptop {"memory":"7GB","manufacture":"India","Color":"Black"} laptop-56789} {LG-X4-Phone {Space:16GB,Manufacture:Finland} Phone-98342323132} {Samsung-S8-Phone {Manufacture:India,Space:8GB} Phone-787867} {LG-X9-Phone {Manufacture:India,Space:8GB} Phone-9835542132} {Samsung-note-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-345990521} {LG-X10-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-9830095542} {Lenovo-yoga-laptop {Manufacture:India,Space:8GB} Laptop-090974} {Apple-X2-Phone {size: 13-inch} Phone-112302} {Apple-X7-Phone {"memory":"8GB","warranty":"2-years","manufacture":"India","Color":"Blue"} Phone-1199302} {Samsung-S22-Ultra-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-3459565490} {LG-X11-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-98300932542} {LG-X23-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-9830321542} {Gionee-Ultra-Phone {Manufacture:Japan,Memory:8GB,Color:Black} Phone-09097086} {LG-X29-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-983003212542}]}
+INFO: 2022/12/30 12:06:28 controller.go:27: Inside GetPrdoucts Function
+INFO: 2022/12/30 12:06:28 controller.go:79: {200 Success []}
+INFO: 2022/12/30 12:10:15 controller.go:89: Inside Insert Product Function
+INFO: 2022/12/30 12:10:15 controller.go:96: Request Body:  {0 LG-X34-Phone LGX34-PHN-13-BlU [123 34 109 101 109 111 114 121 34 58 34 56 71 66 34 44 34 109 97 110 117 102 97 99 116 117 114 101 34 58 34 73 110 100 105 97 34 44 34 67 111 108 111 114 34 58 34 66 108 117 101 34 125] Phone 39500 Phone-983000032142 90}
+INFO: 2022/12/30 12:10:15 controller.go:143: Made query to product table
+INFO: 2022/12/30 12:10:15 controller.go:156: Made query to category table
+INFO: 2022/12/30 12:10:15 controller.go:169: Made query to inventory table
+INFO: 2022/12/30 12:10:15 controller.go:183: Details inserted to the database {200 Insert data successfully}
+INFO: 2022/12/30 12:14:12 controller.go:251: Inside Add item/s to cart function
+INFO: 2022/12/30 12:14:12 controller.go:273: Request Body: {[{1 LG-X11-Phone} {1 LG-X23-Phone}]}
+INFO: 2022/12/30 12:14:12 controller.go:278: Cart ID: 1672382652088
+INFO: 2022/12/30 12:14:12 controller.go:330: Made a query to product table
+INFO: 2022/12/30 12:14:12 controller.go:354: Unit Price of the Product: 36500
+INFO: 2022/12/30 12:14:12 controller.go:358: Query made to invenotry table
+INFO: 2022/12/30 12:14:12 controller.go:378: Quantiy from request:1
+INFO: 2022/12/30 12:14:12 controller.go:395: Quantity requested is less than the inventory quantity
+INFO: 2022/12/30 12:14:12 controller.go:397: total price: 36500
+INFO: 2022/12/30 12:14:12 controller.go:398: Quantity from store inside loop :55
+INFO: 2022/12/30 12:14:12 controller.go:399: Quantity from request inside loop :1
+INFO: 2022/12/30 12:14:12 controller.go:401: Net quantity: 54
+INFO: 2022/12/30 12:14:12 controller.go:330: Made a query to product table
+INFO: 2022/12/30 12:14:12 controller.go:354: Unit Price of the Product: 36500
+INFO: 2022/12/30 12:14:12 controller.go:358: Query made to invenotry table
+INFO: 2022/12/30 12:14:12 controller.go:378: Quantiy from request:1
+INFO: 2022/12/30 12:14:12 controller.go:395: Quantity requested is less than the inventory quantity
+INFO: 2022/12/30 12:14:12 controller.go:397: total price: 36500
+INFO: 2022/12/30 12:14:12 controller.go:398: Quantity from store inside loop :82
+INFO: 2022/12/30 12:14:12 controller.go:399: Quantity from request inside loop :1
+INFO: 2022/12/30 12:14:12 controller.go:401: Net quantity: 81
+INFO: 2022/12/30 12:14:56 controller.go:251: Inside Add item/s to cart function
+INFO: 2022/12/30 12:14:56 controller.go:273: Request Body: {[{2 Asus-Laptop} {2 LG-X9-Phone}]}
+INFO: 2022/12/30 12:14:56 controller.go:278: Cart ID: 1672382696403
+INFO: 2022/12/30 12:14:56 controller.go:330: Made a query to product table
+INFO: 2022/12/30 12:14:56 controller.go:354: Unit Price of the Product: 36400
+INFO: 2022/12/30 12:14:56 controller.go:358: Query made to invenotry table
+INFO: 2022/12/30 12:14:56 controller.go:378: Quantiy from request:2
+INFO: 2022/12/30 12:14:56 controller.go:330: Made a query to product table
+INFO: 2022/12/30 12:14:56 controller.go:354: Unit Price of the Product: 45345
+INFO: 2022/12/30 12:14:56 controller.go:358: Query made to invenotry table
+INFO: 2022/12/30 12:14:56 controller.go:378: Quantiy from request:2
+INFO: 2022/12/30 12:14:56 controller.go:395: Quantity requested is less than the inventory quantity
+INFO: 2022/12/30 12:14:56 controller.go:397: total price: 90690
+INFO: 2022/12/30 12:14:56 controller.go:398: Quantity from store inside loop :5
+INFO: 2022/12/30 12:14:56 controller.go:399: Quantity from request inside loop :2
+INFO: 2022/12/30 12:14:56 controller.go:401: Net quantity: 3
+INFO: 2022/12/30 12:16:16 controller.go:251: Inside Add item/s to cart function
+INFO: 2022/12/30 12:16:16 controller.go:273: Request Body: {[{2 Asus-Laptop} {2 Nokia-Phone}]}
+INFO: 2022/12/30 12:16:16 controller.go:278: Cart ID: 1672382776357
+INFO: 2022/12/30 12:16:16 controller.go:330: Made a query to product table
+INFO: 2022/12/30 12:16:16 controller.go:354: Unit Price of the Product: 36400
+INFO: 2022/12/30 12:16:16 controller.go:358: Query made to invenotry table
+INFO: 2022/12/30 12:16:16 controller.go:378: Quantiy from request:2
+INFO: 2022/12/30 12:19:22 console_inftace_controller.go:24: Inside GetPrdoucts Function
+INFO: 2023/01/08 17:40:42 main.go:44: The application is starting
+INFO: 2023/01/08 20:05:19 main.go:44: The application is starting
+INFO: 2023/01/09 02:11:46 main.go:44: The application is starting
+INFO: 2023/01/09 02:13:03 controller.go:193: Inside Get Particular Product function
+INFO: 2023/01/09 02:13:03 controller.go:199: ID from request:40
+INFO: 2023/01/09 02:13:03 controller.go:215: Made a database query to product table
+INFO: 2023/01/09 02:13:03 controller.go:232: Details retrieved from database: 40 LG-X23-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} LGX23-PHN-13-BLK Phone 36500 Phone-9830321542
+INFO: 2023/01/09 02:13:03 controller.go:243: Response: {200 Success [{40 LG-X23-Phone LGX23-PHN-13-BLK {"memory":"8GB","manufacture":"India","Color":"Black"} Phone 36500 Phone-9830321542}]}
+INFO: 2023/01/09 02:13:13 controller.go:27: Inside GetPrdoucts Function
+INFO: 2023/01/09 02:13:13 controller.go:79: {200 Success [{Asus-laptop {"memory":"7GB","manufacture":"India","Color":"Black"} laptop-56789}]}
+INFO: 2023/01/09 02:13:48 controller.go:27: Inside GetPrdoucts Function
+INFO: 2023/01/09 02:13:48 controller.go:79: {200 Success [{Asus-laptop {"memory":"7GB","manufacture":"India","Color":"Black"} laptop-56789}]}
+INFO: 2023/01/09 02:13:54 controller.go:27: Inside GetPrdoucts Function
+INFO: 2023/01/09 02:13:54 controller.go:79: {200 Success []}
+INFO: 2023/01/09 02:13:59 controller.go:27: Inside GetPrdoucts Function
+INFO: 2023/01/09 02:13:59 controller.go:79: {200 Success [{Asus-laptop {"memory":"7GB","manufacture":"India","Color":"Black"} laptop-56789}]}
+INFO: 2023/01/09 02:15:54 main.go:44: The application is starting
+INFO: 2023/01/09 02:15:59 controller.go:27: Inside GetPrdoucts Function
+INFO: 2023/01/09 02:15:59 controller.go:79: {200 Success [{Asus-laptop {"memory":"7GB","manufacture":"India","Color":"Black"} laptop-56789} {LG-X4-Phone {Space:16GB,Manufacture:Finland} Phone-98342323132} {Samsung-S8-Phone {Manufacture:India,Space:8GB} Phone-787867} {LG-X9-Phone {Manufacture:India,Space:8GB} Phone-9835542132} {Samsung-note-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-345990521} {LG-X10-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-9830095542} {Lenovo-yoga-laptop {Manufacture:India,Space:8GB} Laptop-090974} {Apple-X2-Phone {size: 13-inch} Phone-112302} {Apple-X7-Phone {"memory":"8GB","warranty":"2-years","manufacture":"India","Color":"Blue"} Phone-1199302} {Samsung-S22-Ultra-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-3459565490} {LG-X11-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-98300932542} {LG-X23-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-9830321542} {Gionee-Ultra-Phone {Manufacture:Japan,Memory:8GB,Color:Black} Phone-09097086} {LG-X29-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-983003212542} {LG-X34-Phone {"memory":"8GB","manufacture":"India","Color":"Blue"} Phone-983000032142} {Samsung-S32-Ultra-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} Phone-3454439565490}]}
+INFO: 2023/01/09 02:16:03 controller.go:193: Inside Get Particular Product function
+INFO: 2023/01/09 02:16:03 controller.go:199: ID from request:40
+INFO: 2023/01/09 02:16:03 controller.go:215: Made a database query to product table
+INFO: 2023/01/09 02:16:03 controller.go:232: Details retrieved from database: 40 LG-X23-Phone {"memory":"8GB","manufacture":"India","Color":"Black"} LGX23-PHN-13-BLK Phone 36500 Phone-9830321542
+INFO: 2023/01/09 02:16:03 controller.go:243: Response: {200 Success [{40 LG-X23-Phone LGX23-PHN-13-BLK {"memory":"8GB","manufacture":"India","Color":"Black"} Phone 36500 Phone-9830321542}]}
+INFO: 2023/01/09 02:16:28 controller.go:89: Inside Insert Product Function
+INFO: 2023/01/09 02:16:28 controller.go:96: Request Body:  {0 LG-X35-Phone LGX35-PHN-13-BlU [123 34 109 101 109 111 114 121 34 58 34 56 71 66 34 44 34 109 97 110 117 102 97 99 116 117 114 101 34 58 34 73 110 100 105 97 34 44 34 67 111 108 111 114 34 58 34 66 108 117 101 34 125] Phone 39500 Phone-9833000032142 90}
+INFO: 2023/01/09 02:16:28 controller.go:143: Made query to product table
+INFO: 2023/01/09 02:16:28 controller.go:156: Made query to category table
+INFO: 2023/01/09 02:16:28 controller.go:169: Made query to inventory table
+INFO: 2023/01/09 02:16:28 controller.go:183: Details inserted to the database {200 Insert data successfully}
+INFO: 2023/01/09 02:19:33 controller.go:251: Inside Add item/s to cart function
+INFO: 2023/01/09 02:19:33 controller.go:273: Request Body: {[{1 LG-X11-Phone} {1 LG-X23-Phone}]}
+INFO: 2023/01/09 02:19:33 controller.go:278: Cart ID: 1673210973630
+INFO: 2023/01/09 02:20:57 controller.go:251: Inside Add item/s to cart function
+INFO: 2023/01/09 02:20:57 controller.go:273: Request Body: {[{1 Phone-3454439565490} {1 Phone-9833000032142}]}
+INFO: 2023/01/09 02:20:57 controller.go:278: Cart ID: 1673211057377
+INFO: 2023/01/09 02:20:57 controller.go:330: Made a query to product table
+INFO: 2023/01/09 02:20:57 controller.go:354: Unit Price of the Product: 36500
+INFO: 2023/01/09 02:20:57 controller.go:358: Query made to invenotry table
+INFO: 2023/01/09 02:20:57 controller.go:378: Quantiy from request:1
+INFO: 2023/01/09 02:37:19 controller.go:251: Inside Add item/s to cart function
+INFO: 2023/01/09 02:37:19 controller.go:273: Request Body: {[{1 Phone-9833000032142}]}
+INFO: 2023/01/09 02:37:19 controller.go:278: Cart ID: 1673212039947
+INFO: 2023/01/09 02:37:19 controller.go:330: Made a query to product table
+INFO: 2023/01/09 02:37:19 controller.go:354: Unit Price of the Product: 39500
+INFO: 2023/01/09 02:37:19 controller.go:358: Query made to invenotry table
+INFO: 2023/01/09 02:37:19 controller.go:378: Quantiy from request:1
+INFO: 2023/01/09 02:37:43 main.go:44: The application is starting
+INFO: 2023/01/09 02:37:46 controller.go:251: Inside Add item/s to cart function
+INFO: 2023/01/09 02:37:46 controller.go:273: Request Body: {[{1 Phone-9833000032142}]}
+INFO: 2023/01/09 02:37:46 controller.go:278: Cart ID: 1673212066512
+INFO: 2023/01/09 02:37:46 controller.go:330: Made a query to product table
+INFO: 2023/01/09 02:37:46 controller.go:354: Unit Price of the Product: 39500
+INFO: 2023/01/09 02:37:46 controller.go:358: Query made to invenotry table
+INFO: 2023/01/09 02:37:46 controller.go:378: Quantiy from request:1
+INFO: 2023/01/09 02:38:14 controller.go:251: Inside Add item/s to cart function
+INFO: 2023/01/09 02:38:14 controller.go:273: Request Body: {[{1 Phone-9833000032142}]}
+INFO: 2023/01/09 02:38:14 controller.go:278: Cart ID: 1673212094592
+INFO: 2023/01/09 02:38:14 controller.go:330: Made a query to product table
+INFO: 2023/01/09 02:38:14 controller.go:354: Unit Price of the Product: 39500
+INFO: 2023/01/09 02:38:14 controller.go:358: Query made to invenotry table
+INFO: 2023/01/09 02:38:14 controller.go:378: Quantiy from request:1
+INFO: 2023/01/09 02:43:33 controller.go:251: Inside Add item/s to cart function
+INFO: 2023/01/09 02:43:33 controller.go:273: Request Body: {[{1 Phone-9833000032142}]}
+INFO: 2023/01/09 02:43:33 controller.go:278: Cart ID: 1673212413419
+INFO: 2023/01/09 02:43:33 controller.go:330: Made a query to product table
+INFO: 2023/01/09 02:43:33 controller.go:354: Unit Price of the Product: 39500
+INFO: 2023/01/09 02:43:33 controller.go:358: Query made to invenotry table
+INFO: 2023/01/09 02:43:33 controller.go:378: Quantiy from request:1
+INFO: 2023/01/09 02:44:18 main.go:44: The application is starting
+INFO: 2023/01/09 02:44:22 controller.go:251: Inside Add item/s to cart function
+INFO: 2023/01/09 02:44:22 controller.go:273: Request Body: {[{1 Phone-9833000032142}]}
+INFO: 2023/01/09 02:44:22 controller.go:278: Cart ID: 1673212462984
+INFO: 2023/01/09 02:44:22 controller.go:330: Made a query to product table
+INFO: 2023/01/09 02:44:22 controller.go:354: Unit Price of the Product: 39500
+INFO: 2023/01/09 02:44:22 controller.go:358: Query made to invenotry table
+INFO: 2023/01/09 02:44:23 controller.go:378: Quantiy from request:1
+INFO: 2023/01/09 02:44:23 controller.go:395: Quantity requested is less than the inventory quantity
+INFO: 2023/01/09 02:44:23 controller.go:397: total price: 39500
+INFO: 2023/01/09 02:44:23 controller.go:398: Quantity from store inside loop :90
+INFO: 2023/01/09 02:44:23 controller.go:399: Quantity from request inside loop :1
+INFO: 2023/01/09 02:44:23 controller.go:401: Net quantity: 89
+INFO: 2023/01/09 02:45:06 controller.go:251: Inside Add item/s to cart function
+INFO: 2023/01/09 02:45:06 controller.go:273: Request Body: {[{1 Phone-3454439565490} {1 Phone-9833000032142}]}
+INFO: 2023/01/09 02:45:06 controller.go:278: Cart ID: 1673212506335
+INFO: 2023/01/09 02:45:06 controller.go:330: Made a query to product table
+INFO: 2023/01/09 02:45:06 controller.go:354: Unit Price of the Product: 36500
+INFO: 2023/01/09 02:45:06 controller.go:358: Query made to invenotry table
+INFO: 2023/01/09 02:45:06 controller.go:378: Quantiy from request:1
+INFO: 2023/01/09 02:45:06 controller.go:330: Made a query to product table
+INFO: 2023/01/09 02:45:06 controller.go:354: Unit Price of the Product: 39500
+INFO: 2023/01/09 02:45:06 controller.go:358: Query made to invenotry table
+INFO: 2023/01/09 02:45:06 controller.go:378: Quantiy from request:1
+INFO: 2023/01/09 02:45:06 controller.go:395: Quantity requested is less than the inventory quantity
+INFO: 2023/01/09 02:45:06 controller.go:397: total price: 39500
+INFO: 2023/01/09 02:45:06 controller.go:398: Quantity from store inside loop :89
+INFO: 2023/01/09 02:45:06 controller.go:399: Quantity from request inside loop :1
+INFO: 2023/01/09 02:45:06 controller.go:401: Net quantity: 88
+INFO: 2023/01/09 03:29:37 main.go:44: The application is starting
+INFO: 2023/01/09 03:29:48 controller.go:93: Inside Insert Product Function
+INFO: 2023/01/09 03:29:48 controller.go:100: Request Body:  {0 LG-X35-Phone LGX35-PHN-13-BlU [123 34 109 101 109 111 114 121 34 58 34 56 71 66 34 44 34 109 97 110 117 102 97 99 116 117 114 101 34 58 34 73 110 100 105 97 34 44 34 67 111 108 111 114 34 58 34 66 108 117 101 34 125] Phone 39500  90}
+ERROR: 2023/01/09 03:29:48 controller.go:106: Bad Request. Field can't be empty
+INFO: 2023/01/09 03:31:39 main.go:44: The application is starting
+INFO: 2023/01/09 03:31:43 controller.go:93: Inside Insert Product Function
+INFO: 2023/01/09 03:31:43 controller.go:100: Request Body:  {0 LG-X35-Phone LGX35-PHN-13-BlU [123 34 109 101 109 111 114 121 34 58 34 56 71 66 34 44 34 109 97 110 117 102 97 99 116 117 114 101 34 58 34 73 110 100 105 97 34 44 34 67 111 108 111 114 34 58 34 66 108 117 101 34 125] Phone 39500  90}
+INFO: 2023/01/09 03:31:43 controller.go:138: Made query to product table
+INFO: 2023/01/09 03:31:43 controller.go:151: Made query to category table
+INFO: 2023/01/09 03:31:43 controller.go:164: Made query to inventory table
+INFO: 2023/01/09 03:31:43 controller.go:178: Details inserted to the database {200 Insert data successfully}
+INFO: 2023/01/11 01:50:31 main.go:44: The application is starting
+INFO: 2023/01/11 01:50:56 controller.go:93: Inside Insert Product Function
+INFO: 2023/01/11 01:50:56 controller.go:100: Request Body:  {0 LG-X36-Phone LGX35-PHN-13-BlU [123 34 109 101 109 111 114 121 34 58 34 56 71 66 34 44 34 109 97 110 117 102 97 99 116 117 114 101 34 58 34 73 110 100 105 97 34 44 34 67 111 108 111 114 34 58 34 66 108 117 101 34 125] Phone 39500  90}
+INFO: 2023/01/11 01:50:56 controller.go:139: Made query to product table
+INFO: 2023/01/11 01:50:56 controller.go:152: Made query to category table
+INFO: 2023/01/11 01:50:56 controller.go:165: Made query to inventory table
+INFO: 2023/01/11 01:50:56 controller.go:179: Details inserted to the database {200 Insert data successfully}
+INFO: 2023/01/12 01:42:02 console_inftace_controller.go:29: Inside GetPrdoucts Function
+INFO: 2023/01/12 01:53:19 console_inftace_controller.go:29: Inside GetPrdoucts Function
+INFO: 2023/01/12 01:55:06 console_inftace_controller.go:29: Inside GetPrdoucts Function

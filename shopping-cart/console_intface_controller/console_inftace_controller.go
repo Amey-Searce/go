@@ -18,6 +18,11 @@ func GetCartID() int64 {
 	return time.Now().UnixNano() / int64(time.Millisecond)
 }
 
+func ProductID() int64 {
+	// returns a unique Product ID
+	return time.Now().UnixNano()
+}
+
 // Returns all the products with details such as Name, Product ID, Specs.
 func GetProducts(page_int string) []model.GetProductDetails {
 
@@ -62,9 +67,10 @@ func InsertProduct(shop_details model.Product, quantity int) (result string) {
 
 	db := config.Connect()
 	defer db.Close()
-
+	category_string := shop_details.Category + "#-12354"
+	product_id_string := fmt.Sprint(ProductID())
 	// inserts item details into product table
-	_, err := db.Exec("INSERT INTO product(name,specs,sku,category,price,productid) VALUES(?,?,?,?,?,?)", shop_details.Name, shop_details.Specs, shop_details.Sku, shop_details.Category, shop_details.Price, shop_details.Productid)
+	_, err := db.Exec("INSERT INTO product(name,specs,sku,category,price,productid) VALUES(?,?,?,?,?,?)", shop_details.Name, shop_details.Specs, shop_details.Sku, category_string, shop_details.Price, product_id_string)
 
 	if err != nil {
 		log.Print(err)
@@ -72,7 +78,7 @@ func InsertProduct(shop_details model.Product, quantity int) (result string) {
 	}
 
 	// inserts item details into category table
-	_, err = db.Exec("INSERT INTO category(name,productid) VALUES(?,?)", shop_details.Name, shop_details.Productid)
+	_, err = db.Exec("INSERT INTO category(name,productid) VALUES(?,?)", category_string, product_id_string)
 
 	if err != nil {
 		log.Print(err)
@@ -80,7 +86,7 @@ func InsertProduct(shop_details model.Product, quantity int) (result string) {
 	}
 
 	// inserts item details into inventory table
-	_, err = db.Exec("INSERT INTO inventory(product,quantity,productid) VALUES(?,?,?)", shop_details.Name, quantity, shop_details.Productid)
+	_, err = db.Exec("INSERT INTO inventory(product,quantity,productid) VALUES(?,?,?)", shop_details.Name, quantity, product_id_string)
 
 	if err != nil {
 		log.Print(err)
@@ -158,7 +164,7 @@ func AddItemtoCart(arr_product []model.ShopDetailsReq) model.InventoryAdditional
 	// fmt.Println(arr_product)
 	for index := range arr_product {
 
-		rows, err := db1.Query("SELECT COUNT(*) from product where name=?", arr_product[index].Name)
+		rows, err := db1.Query("SELECT COUNT(*) from product where productid=?", arr_product[index].ProductId)
 
 		if err != nil {
 			log.Print(err)
@@ -171,7 +177,7 @@ func AddItemtoCart(arr_product []model.ShopDetailsReq) model.InventoryAdditional
 			}
 		}
 		if records_received != 0 {
-			rows, err = db1.Query("SELECT id,name,specs,sku,category,price,productid from product where name=?", arr_product[index].Name)
+			rows, err = db1.Query("SELECT id,name,specs,sku,category,price,productid from product where productid=?", arr_product[index].ProductId)
 
 			if err != nil {
 				log.Print(err)
@@ -185,7 +191,7 @@ func AddItemtoCart(arr_product []model.ShopDetailsReq) model.InventoryAdditional
 					unit_price_of_product = prod.Price
 				}
 			}
-			rows, err = db1.Query("SELECT id,product,quantity,productid from inventory where product=?", arr_product[index].Name)
+			rows, err = db1.Query("SELECT id,product,quantity,productid from inventory where productid=?", arr_product[index].ProductId)
 
 			if err != nil {
 				log.Print(err)
@@ -219,7 +225,7 @@ func AddItemtoCart(arr_product []model.ShopDetailsReq) model.InventoryAdditional
 				// fmt.Printf("Quantity from request inside loop :%v", quantity_int)
 				net_quantity_remain := quantity_from_store - quantity_int
 
-				_, err := db1.Query("INSERT INTO cart(product,quantity,productid,price,cartid) VALUES(?,?,?,?,?)", arr_product[index].Name, quantity_int, arrProducts[index].Productid, total_price, cart_id)
+				_, err := db1.Query("INSERT INTO cart(product,quantity,productid,price,cartid) VALUES(?,?,?,?,?)", arr_product[index].ProductId, quantity_int, arrProducts[index].Productid, total_price, cart_id)
 
 				if err != nil {
 					log.Fatal(err.Error())
@@ -254,7 +260,7 @@ func AddItemtoCart(arr_product []model.ShopDetailsReq) model.InventoryAdditional
 
 				}
 
-				rows, err = db1.Query("SELECT id,product,quantity,productid from inventory where product=?", arr_product[index].Name)
+				rows, err = db1.Query("SELECT id,product,quantity,productid from inventory where productid=?", arr_product[index].ProductId)
 
 				if err != nil {
 					log.Print(err)
@@ -271,13 +277,13 @@ func AddItemtoCart(arr_product []model.ShopDetailsReq) model.InventoryAdditional
 					}
 				}
 			} else {
-				less_quantity_inventory += "  The product with name: " + arr_product[index].Name + " is less in number in the inventory. Cannot place this item. "
+				less_quantity_inventory += "  The product with ID: " + arr_product[index].ProductId + " is less in number in the inventory. Cannot place this item. "
 				not_placed_order += 1
 			}
 		} else {
 
 			// fmt.Println("Inhere ")
-			not_found_inventory += "  The product with ID: " + arr_product[index].Name + " is not found in the inventory. Cannot place this item. "
+			not_found_inventory += "  The product with ID: " + arr_product[index].ProductId + " is not found in the inventory. Cannot place this item. "
 			// fmt.Println(not_found_inventory)
 			not_found_order += 1
 			arrProducts = append(arrProducts, productEmpty)

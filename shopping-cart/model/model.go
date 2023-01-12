@@ -76,7 +76,7 @@ type ProductDetailsConsole struct {
 
 type ProductRequestDetails struct {
 	Quantity_from_request int    `json:"quantity"`
-	Product               string `json:"name"`
+	Product               string `json:"productid"`
 }
 type ProductRequestDetails2 struct {
 	Response []ProductRequestDetails `json:"data"`
@@ -114,8 +114,8 @@ type InventoryAdditionalResponse2 struct {
 }
 
 type ShopDetailsReq struct {
-	Quantity int
-	Name     string
+	Quantity  int
+	ProductId string
 }
 
 type UpdateCartBody struct {

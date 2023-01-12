@@ -20,6 +20,10 @@ func GetCartID() int64 {
 	// returns a unique Cart ID
 	return time.Now().UnixNano() / int64(time.Millisecond)
 }
+func ProductID() int64 {
+	// returns a unique Product ID
+	return time.Now().UnixNano()
+}
 
 // Returns all the products with details such as Name, Product ID, Specs.
 func GetProducts(w http.ResponseWriter, r *http.Request) {
@@ -95,17 +99,8 @@ func InsertProduct(w http.ResponseWriter, r *http.Request) {
 	json.Unmarshal(reqBody, &post)
 	logging.InfoLogger.Println("Request Body: ", post)
 	final_specs := string(post.Specs)
+	product_id_string := fmt.Sprint(ProductID())
 
-	if len(post.Productid) == 0 {
-
-		logging.ErrorLogger.Println("Bad Request. Field can't be empty")
-		w.Header().Set("Content-Type", "application/json")
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.WriteHeader(400)
-		json.NewEncoder(w).Encode("Bad Request. Field can't be empty")
-		return
-
-	}
 	if len(post.Name) == 0 {
 
 		logging.ErrorLogger.Println("Bad Request. Field can't be empty")
@@ -139,9 +134,10 @@ func InsertProduct(w http.ResponseWriter, r *http.Request) {
 
 	}
 
+	category_string := post.Category + "#-12354"
 	// inserts item details into product table
 	logging.InfoLogger.Println("Made query to product table")
-	_, err := db.Exec("INSERT INTO product(name,specs,sku,category,price,productid) VALUES(?,?,?,?,?,?)", post.Name, final_specs, post.Sku, post.Category, post.Price, post.Productid)
+	_, err := db.Exec("INSERT INTO product(name,specs,sku,category,price,productid) VALUES(?,?,?,?,?,?)", post.Name, final_specs, post.Sku, category_string, post.Price, product_id_string)
 
 	if err != nil {
 		logging.ErrorLogger.Println(err)
@@ -154,7 +150,7 @@ func InsertProduct(w http.ResponseWriter, r *http.Request) {
 
 	// inserts item details into category table
 	logging.InfoLogger.Println("Made query to category table")
-	_, err = db.Exec("INSERT INTO category(name,productid) VALUES(?,?)", post.Name, post.Productid)
+	_, err = db.Exec("INSERT INTO category(name,productid) VALUES(?,?)", category_string, product_id_string)
 
 	if err != nil {
 		logging.ErrorLogger.Println(err)
@@ -167,7 +163,7 @@ func InsertProduct(w http.ResponseWriter, r *http.Request) {
 
 	// inserts item details into inventory table
 	logging.InfoLogger.Println("Made query to inventory table")
-	_, err = db.Exec("INSERT INTO inventory(product,quantity,productid) VALUES(?,?,?)", post.Name, post.Quantity, post.Productid)
+	_, err = db.Exec("INSERT INTO inventory(product,quantity,productid) VALUES(?,?,?)", post.Name, post.Quantity, product_id_string)
 
 	if err != nil {
 		log.Print(err)
@@ -294,7 +290,7 @@ func AddItemtoCart(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(arrResponse)
 
 	for index := range arrResponse {
-		rows, err := db1.Query("SELECT COUNT(*) FROM student.product WHERE name=?", arrResponse[index].Product)
+		rows, err := db1.Query("SELECT COUNT(*) FROM student.product WHERE productid=?", arrResponse[index].Product)
 
 		if err != nil {
 			logging.ErrorLogger.Println(err)
@@ -328,7 +324,7 @@ func AddItemtoCart(w http.ResponseWriter, r *http.Request) {
 		// for index := range arrResponse {
 		if records_returned != 0 {
 			logging.InfoLogger.Println("Made a query to product table")
-			rows, err = db1.Query("SELECT id,name,specs,sku,category,price,productid from product where name=?", arrResponse[index].Product)
+			rows, err = db1.Query("SELECT id,name,specs,sku,category,price,productid from product where productid=?", arrResponse[index].Product)
 
 			if err != nil {
 				logging.ErrorLogger.Println(err)
@@ -356,7 +352,7 @@ func AddItemtoCart(w http.ResponseWriter, r *http.Request) {
 			}
 
 			logging.InfoLogger.Println("Query made to invenotry table")
-			rows, err = db1.Query("SELECT id,product,quantity,productid from inventory where product=?", arrResponse[index].Product)
+			rows, err = db1.Query("SELECT id,product,quantity,productid from inventory where productid=?", arrResponse[index].Product)
 
 			if err != nil {
 				log.Print(err)
@@ -446,7 +442,7 @@ func AddItemtoCart(w http.ResponseWriter, r *http.Request) {
 
 				}
 
-				rows, err = db1.Query("SELECT id,product,quantity,productid from inventory where product=?", arrResponse[index].Product)
+				rows, err = db1.Query("SELECT id,product,quantity,productid from inventory where productid=?", arrResponse[index].Product)
 
 				if err != nil {
 					log.Print(err)
